@@ -3,18 +3,25 @@ document.getElementById('calc-bmi').addEventListener('click', function() {
     let weight = document.getElementById('weight').value;
     let height = document.getElementById('height').value;
 
-    // making sure the user actually entered numbers so the math doesn't break
     if (weight > 0 && height > 0) {
-        // the formula needs height in meters, not cm
         let heightInMeters = height / 100;
-        
-        // standard bmi calculation formulaa: weight divided by height squared
         let bmi = weight / (heightInMeters * heightInMeters);
+        
+        // figure out the health category based on the final number which is user BMI
+        let category = "";
+        if (bmi < 18.5) {
+            category = " (Underweight)";
+        } else if (bmi >= 18.5 && bmi <= 24.9) {
+            category = " (Healthy Weight)";
+        } else if (bmi >= 25 && bmi <= 29.9) {
+            category = " (Overweight)";
+        } else {
+            category = " (Obese)";
+        }
 
-        // show the final number on the page and round the answer to 2 decimal places
-        document.getElementById('bmi-result').innerHTML = "Your BMI is: " + bmi.toFixed(2);
+        // show the final number and the category text all together
+        document.getElementById('bmi-result').innerHTML = "Your BMI is: " + bmi.toFixed(2) + category;
     } else {
-        // show a quick error if they left the boxes blank
         document.getElementById('bmi-result').innerHTML = "Please enter your details!";
     }
 });
