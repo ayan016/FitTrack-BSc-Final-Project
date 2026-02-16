@@ -25,3 +25,33 @@ document.getElementById('calc-bmi').addEventListener('click', function() {
         document.getElementById('bmi-result').innerHTML = "Please enter your details!";
     }
 });
+
+document.getElementById('calc-budget').addEventListener('click', function() {
+    // getting the money numbers that the user typed in
+    let allowance = document.getElementById('allowance').value;
+    let expense = document.getElementById('expense').value;
+
+    if (allowance > 0 && expense > 0) {
+        // calculating total monthly expense of user (assuming 30 days)
+        let totalMonthlyExpense = expense * 30;
+        
+        // figuring out what is left over in the mothly budget
+        let remaining = allowance - totalMonthlyExpense;
+
+        let message = "";
+        // checking if the user is saving or losing money
+        if (remaining > 0) {
+            message = "Good job! You will save " + remaining + " PKR this month.";
+        } else if (remaining < 0) {
+            // Math.abs just removes the negative sign so it reads better
+            message = "Watch out! You are over budget by " + Math.abs(remaining) + " PKR.";
+        } else {
+            message = "You are breaking exactly even this month.";
+        }
+
+        // pushing the final message to the screen as output
+        document.getElementById('budget-result').innerHTML = message;
+    } else {
+        document.getElementById('budget-result').innerHTML = "Please enter your budget details!";
+    }
+});
