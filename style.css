@@ -99,3 +99,12 @@ input[type="number"]:focus {
     transform: translateY(-4px);
     box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1); 
 }
+
+/* The table out lining were very stretched so this part fixes that issue */
+.data-table table {
+    table-layout: fixed; 
+}
+
+* {
+    box-sizing: border-box; 
+}
