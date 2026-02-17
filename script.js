@@ -55,3 +55,27 @@ document.getElementById('calc-budget').addEventListener('click', function() {
         document.getElementById('budget-result').innerHTML = "Please enter your budget details!";
     }
 });
+
+document.getElementById('calc-cals').addEventListener('click', function() {
+    // getting the calories numbers that are given by the user itslef
+    let goal = document.getElementById('goal').value;
+    let eaten = document.getElementById('eaten').value;
+
+    if (goal > 0 && eaten > 0) {
+        // simple basic math to find what is left.
+        let left = goal - eaten;
+        let message = "";
+        
+        if (left > 0) {
+            message = "You have " + left + " calories left for today.";
+        } else if (left < 0) {
+            message = "You are over by " + Math.abs(left) + " calories.";
+        } else {
+            message = "You hit your goal exactly!";
+        }
+
+        document.getElementById('cal-result').innerHTML = message;
+    } else {
+        document.getElementById('cal-result').innerHTML = "Enter your calories!";
+    }
+});
