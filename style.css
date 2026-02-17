@@ -85,3 +85,17 @@ input[type="number"]:focus {
     outline: none;
     border-color: #27ae60;
 }
+
+/* Here I am adding the Floating Card Effect */
+#dashboard > section, .data-table {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#dashboard > section:hover, .data-table:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1); 
+}
