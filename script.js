@@ -85,3 +85,20 @@ document.getElementById('calc-cals').addEventListener('click', function() {
         document.getElementById('cal-result').innerHTML = "Enter your calories!";
     }
 });
+
+
+// Dark Mode active Logic
+document.getElementById('toggle-dark').addEventListener('click', function() {
+    document.body.classList.toggle('dark-mode');
+    
+    // To Swap the button text and colors
+    if (document.body.classList.contains('dark-mode')) {
+        this.innerHTML = "☀️ Light Mode";
+        this.style.background = "#f1c40f";
+        this.style.color = "#2c3e50";
+    } else {
+        this.innerHTML = "🌙 Dark Mode";
+        this.style.background = "#2c3e50";
+        this.style.color = "white";
+    }
+});

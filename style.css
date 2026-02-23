@@ -100,11 +100,88 @@ input[type="number"]:focus {
     box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1); 
 }
 
-/* The table out lining were very stretched so this part fixes that issue */
+
 .data-table table {
     table-layout: fixed; 
 }
 
 * {
     box-sizing: border-box; 
+}
+
+
+.tables-grid {
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)) !important;
+}
+.data-table th, .data-table td {
+    padding: 12px 10px !important;
+    white-space: nowrap; 
+}
+
+
+body.dark-mode {
+    background-color: #121212;
+}
+body.dark-mode #dashboard > section, 
+body.dark-mode .data-table {
+    background: #1e1e1e;
+    border: 1px solid #333;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+body.dark-mode h2, 
+body.dark-mode h3, 
+body.dark-mode p, 
+body.dark-mode label,
+body.dark-mode td,
+body.dark-mode th {
+    color: #f5f6fa !important;
+}
+body.dark-mode input[type="number"] {
+    background: #2d3436;
+    color: #fff;
+    border-color: #444;
+}
+body.dark-mode tr {
+    border-bottom: 1px solid #444 !important;
+}
+
+/* adding Dashboard Grid to improve looks  */
+#dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+#dashboard > section {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    border: 1px solid #eaeaea; 
+}
+
+.data-table table {
+    width: 100% !important;
+    table-layout: auto !important;
+}
+
+.data-table th, .data-table td {
+    padding: 15px 10px !important;
+    white-space: normal !important;
+    text-align: left !important;
+}
+
+.tables-grid {
+    display: grid;
+    grid-template-columns: 1fr; 
+    gap: 30px;
+    width: 100%;
+    margin-top: 30px;
+}
+
+/*  Fixing the Dark Mode Background as it isnt working properlyy  */
+body.dark-mode main,
+body.dark-mode #dashboard,
+body.dark-mode .container {
+    background-color: #121212 !important;
 }
