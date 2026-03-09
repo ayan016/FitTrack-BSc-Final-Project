@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitTrack - Meal Hub</title>
+    <style>
+        body {
+            background-color: #f8f9fa; 
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+       
+        .main-header {
+            background-color: #1f272b; 
+            color: white;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+       
+        .main-header h1 {
+            margin: 0;
+            font-size: 24px;
+            color: #28a745; 
+        }
+        .main-header h1 span {
+            color: white;
+        }
+        
+        .back-link {
+            color: white;
+            text-decoration: none;
+            border: 1px solid #28a745;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .back-link:hover {
+            background-color: #28a745;
+        }
+        
+        .meal-container {
+            width: 85%;
+            margin: 30px auto;
+        }
+
+       
+        .meal-container h2 {
+            color: #28a745; 
+            margin-bottom: 25px;
+        }
+        
+        .recipe-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+        }
+        
+       
+        .recipe-card {
+            background: white;
+            border-radius: 12px;
+            width: 260px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05); 
+            padding-bottom: 15px;
+        }
+        
+        .card-image {
+            height: 140px;
+            width: 100%;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+        }
+        
+        .card-content {
+            padding: 20px;
+        }
+        
+        h3 {
+            margin-top: 0;
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        p {
+            color: #777;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        
+        
+        .view-btn {
+            background-color: #28a745; 
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%; 
+        }
+
+        .view-btn:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="main-header">
+        <h1>Fit<span>Track</span></h1>
+        <a href="index.html" class="back-link">Back to Dashboard</a>
+    </header>
+
+    <div class="meal-container">
+        <h2>Healthy Meal Hub</h2>
+        <div class="recipe-grid">
+            
+            <div class="recipe-card">
+                <div class="card-image" style="background-color: #fce5cd;"></div>
+                <div class="card-content">
+                    <h3>Oat & Banana Power Bowl</h3>
+                    <p>A high-energy breakfast under 400 calories.</p>
+                    <button class="view-btn">View Recipe</button>
+                </div>
+            </div>
+
+            <div class="recipe-card">
+                <div class="card-image" style="background-color: #d9ead3;"></div>
+                <div class="card-content">
+                    <h3>Grilled Chicken Salad</h3>
+                    <p>High protein, low carb lunch option.</p>
+                    <button class="view-btn">View Recipe</button>
+                </div>
+            </div>
+
+            <div class="recipe-card">
+                <div class="card-image" style="background-color: #f4cccc;"></div>
+                <div class="card-content">
+                    <h3>Banana Oat Pancakes</h3>
+                    <p>Guilt-free stack packed with protein. Only 320 calories.</p>
+                    <button class="view-btn">View Recipe</button>
+                </div>
+            </div>
+
+            <div class="recipe-card">
+                <div class="card-image" style="background-color: #cfe2f3;"></div>
+                <div class="card-content">
+                    <h3>Post-Walk Tuna Wrap</h3>
+                    <p>Super light and easy to make after a long walk.</p>
+                    <button class="view-btn">View Recipe</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>
