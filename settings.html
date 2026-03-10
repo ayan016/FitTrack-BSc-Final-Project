@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitTrack | Health & Budget Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav class="sidebar">
+        <h2 style="text-align: center; color: #2ecc71; font-size: 28px; margin-top: 30px; margin-bottom: 5px;">FitTrack</h2>
+        <p style="text-align: center; color: #7f8c8d; font-size: 13px; margin-bottom: 40px; margin-top: 0;">Health & Budget</p>
+        
+        <ul class="nav-links">
+            <li><a href="index.html">📊 Dashboard</a></li>
+            <li><a href="analytics.html">📈 Analytics</a></li>
+            <li><a href="meals.html">🥗 Meal Hub</a></li>
+            <li><a href="settings.html" class="active">⚙️ Settings</a></li>
+        </ul>
+    </nav>
+
+    <main id="dashboard" style="display: block; max-width: 600px; margin: 40px auto;">
+        <section style="background: white; padding: 30px; border-radius: 15px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);">
+            <h2 style="margin-top: 0; border-bottom: 2px solid #f4f7f6; padding-bottom: 15px; margin-bottom: 25px;">Account Settings</h2>
+            
+            <form>
+                <h3 style="color: #2c3e50; font-size: 18px; margin-bottom: 15px;">Profile Information</h3>
+                <div class="input-group">
+                    <label>First Name:</label>
+                    <input type="text" value="Ayan" style="width: 100%; padding: 10px; border: 2px solid #e0e6ed; border-radius: 8px; font-family: 'Poppins', sans-serif;">
+                </div>
+                <div class="input-group">
+                    <label>Height (cm):</label>
+                    <input type="number" value="175">
+                </div>
+
+                <h3 style="color: #2c3e50; font-size: 18px; margin-top: 30px; margin-bottom: 15px;">Fitness Goals</h3>
+                <div class="input-group">
+                    <label>Starting Weight (kg):</label>
+                    <input type="number" value="83">
+                </div>
+                <div class="input-group">
+                    <label>Target Weight (kg):</label>
+                    <input type="number" value="75">
+                </div>
+
+                <h3 style="color: #2c3e50; font-size: 18px; margin-top: 30px; margin-bottom: 15px;">Financial Settings</h3>
+                <div class="input-group">
+                    <label>Monthly Allowance (PKR):</label>
+                    <input type="number" value="15000">
+                </div>
+
+                <button type="button" style="margin-top: 20px;" onclick="alert('Settings saved successfully!')">Save Changes</button>
+            </form>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
