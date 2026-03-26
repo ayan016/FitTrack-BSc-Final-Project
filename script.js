@@ -1,8 +1,6 @@
-// TO Import the core Firebase tools directly from Google itselff
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
 import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-// My app credentials(pass etc)
 const firebaseConfig = {
   apiKey: "AIzaSyA2c9lMr-knuLL1r8CRW_MvtMM1hqSP6gU",
   authDomain: "fittrack-b0ee8.firebaseapp.com",
@@ -12,111 +10,135 @@ const firebaseConfig = {
   appId: "1:968942652478:web:fe4eb034783068966f956f"
 };
 
-// To Start the engine
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-document.getElementById('calc-bmi').addEventListener('click', function() {
-    let weight = document.getElementById('weight').value;
-    let heightCm = document.getElementById('height').value;
+const bmiBtn = document.getElementById('calc-bmi');
+if (bmiBtn) {
+    bmiBtn.addEventListener('click', function() {
+        let weight = document.getElementById('weight').value;
+        let heightCm = document.getElementById('height').value;
 
-    if (weight > 0 && heightCm > 0) {
-        // Do do the math
-        let heightM = heightCm / 100;
-        let bmi = (weight / (heightM * heightM)).toFixed(1);
-        
-        let category = "";
-        let smartAdvice = "";
-
-        // The logic for the Smart Engine 
-        if (bmi < 18.5) {
-            category = "Underweight";
-            smartAdvice = "Aim for 2000+ calories. Eat calorie-dense, affordable foods like eggs and nuts.";
-        } else if (bmi >= 18.5 && bmi <= 24.9) {
-            category = "Normal Weight";
-            smartAdvice = "Maintain your current diet! Adding a daily 8km brisk walk is perfect for staying healthy without strict calorie cuts.";
-        } else {
-            category = "Overweight";
-            smartAdvice = "Target 1500-1600 calories to safely drop weight. Focus on chicken breast and lentils (daal) to stay full on a student budget.";
-        }
-
-        // Push and output everything to the screen so the user can see it
-        document.getElementById('bmi-result').innerHTML = 
-            "<strong>Your BMI:</strong> " + bmi + " (" + category + ")<br><br>" +
-            "<strong>💡 Smart Plan:</strong> " + smartAdvice;
+        if (weight > 0 && heightCm > 0) {
+            let heightM = heightCm / 100;
+            let bmi = (weight / (heightM * heightM)).toFixed(1);
             
-    } else {
-        document.getElementById('bmi-result').innerHTML = "Please enter valid numbers!";
-    }
-});
+            let category = "";
+            let smartAdvice = "";
 
-document.getElementById('calc-budget').addEventListener('click', function() {
-    // getting the money numbers that the user typed in
-    let allowance = document.getElementById('allowance').value;
-    let expense = document.getElementById('expense').value;
+            if (bmi < 18.5) {
+                category = "Underweight";
+                smartAdvice = "Aim for 2000+ calories. Eat calorie-dense, affordable foods like eggs and nuts.";
+            } else if (bmi >= 18.5 && bmi <= 24.9) {
+                category = "Normal Weight";
+                smartAdvice = "Maintain your current diet! Adding a daily 8km brisk walk is perfect for staying healthy without strict calorie cuts.";
+            } else {
+                category = "Overweight";
+                smartAdvice = "Target 1500-1600 calories to safely drop weight. Focus on chicken breast and lentils (daal) to stay full on a student budget.";
+            }
 
-    if (allowance > 0 && expense > 0) {
-        // calculating total monthly expense of user (assuming 30 days)
-        let totalMonthlyExpense = expense * 30;
-        
-        // figuring out what is left over in the mothly budget
-        let remaining = allowance - totalMonthlyExpense;
-
-        let message = "";
-        // checking if the user is saving or losing money
-        if (remaining > 0) {
-            message = "Good job! You will save " + remaining + " PKR this month.";
-        } else if (remaining < 0) {
-            // Math.abs just removes the negative sign so it reads better
-            message = "Watch out! You are over budget by " + Math.abs(remaining) + " PKR.";
+            document.getElementById('bmi-result').innerHTML = 
+                "<strong>Your BMI:</strong> " + bmi + " (" + category + ")<br><br>" +
+                "<strong>💡 Smart Plan:</strong> " + smartAdvice;
+                
         } else {
-            message = "You are breaking exactly even this month.";
+            document.getElementById('bmi-result').innerHTML = "Please enter valid numbers!";
         }
+    });
+}
 
-        // pushing the final message to the screen as output
-        document.getElementById('budget-result').innerHTML = message;
-    } else {
-        document.getElementById('budget-result').innerHTML = "Please enter your budget details!";
-    }
-});
+const budgetBtn = document.getElementById('calc-budget');
+if (budgetBtn) {
+    budgetBtn.addEventListener('click', function() {
+        let allowance = document.getElementById('allowance').value;
+        let expense = document.getElementById('expense').value;
 
-document.getElementById('calc-cals').addEventListener('click', function() {
-    // getting the calories numbers that are given by the user itslef
-    let goal = document.getElementById('goal').value;
-    let eaten = document.getElementById('eaten').value;
+        if (allowance > 0 && expense > 0) {
+            let totalMonthlyExpense = expense * 30;
+            let remaining = allowance - totalMonthlyExpense;
+            let message = "";
+            
+            if (remaining > 0) {
+                message = "Good job! You will save " + remaining + " PKR this month.";
+            } else if (remaining < 0) {
+                message = "Watch out! You are over budget by " + Math.abs(remaining) + " PKR.";
+            } else {
+                message = "You are breaking exactly even this month.";
+            }
 
-    if (goal > 0 && eaten > 0) {
-        // simple basic math to find what is left.
-        let left = goal - eaten;
-        let message = "";
-        
-        if (left > 0) {
-            message = "You have " + left + " calories left for today.";
-        } else if (left < 0) {
-            message = "You are over by " + Math.abs(left) + " calories.";
+            document.getElementById('budget-result').innerHTML = message;
         } else {
-            message = "You hit your goal exactly!";
+            document.getElementById('budget-result').innerHTML = "Please enter your budget details!";
         }
+    });
+}
 
-        document.getElementById('cal-result').innerHTML = message;
-    } else {
-        document.getElementById('cal-result').innerHTML = "Enter your calories!";
-    }
-});
+const calsBtn = document.getElementById('calc-cals');
+if (calsBtn) {
+    calsBtn.addEventListener('click', function() {
+        let goal = document.getElementById('goal').value;
+        let eaten = document.getElementById('eaten').value;
 
+        if (goal > 0 && eaten > 0) {
+            let left = goal - eaten;
+            let message = "";
+            
+            if (left > 0) {
+                message = "You have " + left + " calories left for today.";
+            } else if (left < 0) {
+                message = "You are over by " + Math.abs(left) + " calories.";
+            } else {
+                message = "You hit your goal exactly!";
+            }
 
-// Dark Mode active Logic
-document.getElementById('toggle-dark').addEventListener('click', function() {
-    document.body.classList.toggle('dark-mode');
-    
-    // To Swap the button text and colors
-    if (document.body.classList.contains('dark-mode')) {
-        this.innerHTML = "☀️ Light Mode";
-        this.style.background = "#f1c40f";
-        this.style.color = "#2c3e50";
-    } else {
-        this.innerHTML = "🌙 Dark Mode";
-        this.style.background = "#2c3e50";
-        this.style.color = "white";
-    }
-});
+            document.getElementById('cal-result').innerHTML = message;
+        } else {
+            document.getElementById('cal-result').innerHTML = "Enter your calories!";
+        }
+    });
+}
+
+const darkBtn = document.getElementById('toggle-dark');
+if (darkBtn) {
+    darkBtn.addEventListener('click', function() {
+        document.body.classList.toggle('dark-mode');
+
+        if (document.body.classList.contains('dark-mode')) {
+            this.innerHTML = "☀️ Light Mode";
+            this.style.background = "#f1c40f";
+            this.style.color = "#2c3e50";
+        } else {
+            this.innerHTML = "🌙 Dark Mode";
+            this.style.background = "#2c3e50";
+            this.style.color = "white";
+        }
+    });
+}
+
+const saveButton = document.getElementById('save-settings');
+if (saveButton) {
+    saveButton.addEventListener('click', async function(e) {
+        e.preventDefault();
+
+        let name = document.getElementById('setting-name').value;
+        let height = document.getElementById('setting-height').value;
+        let startWeight = document.getElementById('setting-start-weight').value;
+        let targetWeight = document.getElementById('setting-target-weight').value;
+        let allowance = document.getElementById('setting-allowance').value;
+
+        try {
+            await setDoc(doc(db, "users", "my_profile"), {
+                first_name: name,
+                height_cm: Number(height),
+                starting_weight: Number(startWeight),
+                target_weight: Number(targetWeight),
+                monthly_allowance_pkr: Number(allowance)
+            });
+            
+            alert('Cloud sync complete! Your settings are saved.');
+        } catch (error) {
+            console.error("Firebase Error: ", error);
+            alert('Something went wrong. Check the console.');
+        }
+    });
+}
