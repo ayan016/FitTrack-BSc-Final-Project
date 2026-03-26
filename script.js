@@ -1,3 +1,21 @@
+// TO Import the core Firebase tools directly from Google itselff
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+// My app credentials(pass etc)
+const firebaseConfig = {
+  apiKey: "AIzaSyA2c9lMr-knuLL1r8CRW_MvtMM1hqSP6gU",
+  authDomain: "fittrack-b0ee8.firebaseapp.com",
+  projectId: "fittrack-b0ee8",
+  storageBucket: "fittrack-b0ee8.firebasestorage.app",
+  messagingSenderId: "968942652478",
+  appId: "1:968942652478:web:fe4eb034783068966f956f"
+};
+
+// To Start the engine
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
 document.getElementById('calc-bmi').addEventListener('click', function() {
     let weight = document.getElementById('weight').value;
     let heightCm = document.getElementById('height').value;

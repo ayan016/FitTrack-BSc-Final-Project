@@ -29,34 +29,34 @@
                 <h3 style="color: #2c3e50; font-size: 18px; margin-bottom: 15px;">Profile Information</h3>
                 <div class="input-group">
                     <label>First Name:</label>
-                    <input type="text" value="Ayan" style="width: 100%; padding: 10px; border: 2px solid #e0e6ed; border-radius: 8px; font-family: 'Poppins', sans-serif;">
+                    <input type="text" id="setting-name" value="Ayan" style="width: 100%; padding: 10px; border: 2px solid #e0e6ed; border-radius: 8px; font-family: 'Poppins', sans-serif;">
                 </div>
                 <div class="input-group">
                     <label>Height (cm):</label>
-                    <input type="number" value="175">
+                    <input type="number" id="setting-height" value="175">
                 </div>
 
                 <h3 style="color: #2c3e50; font-size: 18px; margin-top: 30px; margin-bottom: 15px;">Fitness Goals</h3>
                 <div class="input-group">
                     <label>Starting Weight (kg):</label>
-                    <input type="number" value="83">
+                    <input type="number" id="setting-start-weight" value="83">
                 </div>
                 <div class="input-group">
                     <label>Target Weight (kg):</label>
-                    <input type="number" value="75">
+                    <input type="number" id="setting-target-weight" value="75">
                 </div>
 
                 <h3 style="color: #2c3e50; font-size: 18px; margin-top: 30px; margin-bottom: 15px;">Financial Settings</h3>
                 <div class="input-group">
                     <label>Monthly Allowance (PKR):</label>
-                    <input type="number" value="15000">
+                    <input type="number" id="setting-allowance" value="15000">
                 </div>
 
-                <button type="button" style="margin-top: 20px;" onclick="alert('Settings saved successfully!')">Save Changes</button>
+                <button type="button" id="save-settings" style="margin-top: 20px;">Save Changes</button>
             </form>
         </section>
     </main>
 
-    <script src="script.js"></script>
+    <script type="module" src="script.js"></script>
 </body>
 </html>
