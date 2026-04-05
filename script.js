@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyA2c9lMr-knuLL1r8CRW_MvtMM1hqSP6gU",
@@ -13,6 +13,45 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+// Function to pull user data when the page loads auto
+async function loadUserProfile() {
+    try {
+        const docRef = doc(db, "users", "my_profile");
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            const data = docSnap.data();
+            console.log("Cloud Data successfully loaded:", data);
+
+            // Populate the Dashboard Inputs
+            const dashHeight = document.getElementById('height');
+            const dashAllowance = document.getElementById('allowance');
+
+            if (dashHeight) dashHeight.value = data.height_cm;
+            if (dashAllowance) dashAllowance.value = data.monthly_allowance_pkr;
+
+            // Populate the Settings Page Inputs
+            const setName = document.getElementById('setting-name');
+            const setHeight = document.getElementById('setting-height');
+            const setStartWeight = document.getElementById('setting-start-weight');
+            const setTargetWeight = document.getElementById('setting-target-weight');
+            const setAllowance = document.getElementById('setting-allowance');
+
+            if (setName) setName.value = data.first_name;
+            if (setHeight) setHeight.value = data.height_cm;
+            if (setStartWeight) setStartWeight.value = data.starting_weight;
+            if (setTargetWeight) setTargetWeight.value = data.target_weight;
+            if (setAllowance) setAllowance.value = data.monthly_allowance_pkr;
+
+        } else {
+            console.log("No profile found in the cloud yet.");
+        }
+    } catch (error) {
+        console.error("Error fetching profile: ", error);
+    }
+}
+loadUserProfile();
+
 const bmiBtn = document.getElementById('calc-bmi');
 if (bmiBtn) {
     bmiBtn.addEventListener('click', function() {
@@ -22,7 +61,7 @@ if (bmiBtn) {
         if (weight > 0 && heightCm > 0) {
             let heightM = heightCm / 100;
             let bmi = (weight / (heightM * heightM)).toFixed(1);
-            
+            localStorage.setItem('currentWeight', weight);
             let category = "";
             let smartAdvice = "";
 
@@ -56,8 +95,12 @@ if (budgetBtn) {
         if (allowance > 0 && expense > 0) {
             let totalMonthlyExpense = expense * 30;
             let remaining = allowance - totalMonthlyExpense;
-            let message = "";
             
+            // Too Save the math to browser storage so the Analytics page can see it
+            localStorage.setItem('savedExpense', totalMonthlyExpense);
+            localStorage.setItem('savedRemaining', remaining);
+
+            let message = "";
             if (remaining > 0) {
                 message = "Good job! You will save " + remaining + " PKR this month.";
             } else if (remaining < 0) {
@@ -72,7 +115,6 @@ if (budgetBtn) {
         }
     });
 }
-
 const calsBtn = document.getElementById('calc-cals');
 if (calsBtn) {
     calsBtn.addEventListener('click', function() {
