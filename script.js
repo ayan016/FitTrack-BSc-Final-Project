@@ -23,6 +23,15 @@ async function loadUserProfile() {
             const data = docSnap.data();
             console.log("Cloud Data successfully loaded:", data);
 
+            // NEW: Update the greeting and the avatar letter
+            const greeting = document.getElementById('user-greeting');
+            const avatar = document.getElementById('user-avatar');
+            
+            if (greeting && data.first_name) {
+                greeting.innerText = "Welcome back, " + data.first_name + "!";
+                avatar.innerText = data.first_name.charAt(0).toUpperCase();
+            }
+
             // Populate the Dashboard Inputs
             const dashHeight = document.getElementById('height');
             const dashAllowance = document.getElementById('allowance');
@@ -55,13 +64,15 @@ loadUserProfile();
 const bmiBtn = document.getElementById('calc-bmi');
 if (bmiBtn) {
     bmiBtn.addEventListener('click', function() {
+        console.log("The button is actually awake!");
+
         let weight = document.getElementById('weight').value;
         let heightCm = document.getElementById('height').value;
 
         if (weight > 0 && heightCm > 0) {
             let heightM = heightCm / 100;
             let bmi = (weight / (heightM * heightM)).toFixed(1);
-            localStorage.setItem('currentWeight', weight);
+            
             let category = "";
             let smartAdvice = "";
 
@@ -75,6 +86,11 @@ if (bmiBtn) {
                 category = "Overweight";
                 smartAdvice = "Target 1500-1600 calories to safely drop weight. Focus on chicken breast and lentils (daal) to stay full on a student budget.";
             }
+
+            
+            localStorage.setItem('currentWeight', weight);
+            localStorage.setItem('currentBMI', bmi);
+            localStorage.setItem('bmiCategory', category);
 
             document.getElementById('bmi-result').innerHTML = 
                 "<strong>Your BMI:</strong> " + bmi + " (" + category + ")<br><br>" +
@@ -99,6 +115,7 @@ if (budgetBtn) {
             // Too Save the math to browser storage so the Analytics page can see it
             localStorage.setItem('savedExpense', totalMonthlyExpense);
             localStorage.setItem('savedRemaining', remaining);
+            localStorage.setItem('totalAllowance', allowance);
 
             let message = "";
             if (remaining > 0) {

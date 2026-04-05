@@ -59,3 +59,31 @@ new Chart(ctxBudget, {
         cutout: '70%'
     }
 });
+
+// Floating Cards update for analytics pagee
+// Update the BMI Card
+let currentBMI = localStorage.getItem('currentBMI');
+let bmiCategory = localStorage.getItem('bmiCategory');
+if (currentBMI) {
+    document.getElementById('card-bmi').innerText = currentBMI;
+    document.getElementById('card-bmi-status').innerText = '● ' + bmiCategory;
+}
+
+// Update the Weight Progress Card (Comparing against 83kg start)
+if (latestWeight !== 79) { // 79 was our default placeholder
+    let weightDiff = (latestWeight - 83).toFixed(1);
+    // Add a plus sign if you gained weight, otherwise keep the negative
+    let diffText = weightDiff > 0 ? "+" + weightDiff + " kg" : weightDiff + " kg";
+    document.getElementById('card-weight-diff').innerText = diffText;
+}
+
+// Too Update the Budget Card
+let allowance = Number(localStorage.getItem('totalAllowance'));
+if (allowance && allowance > 0) {
+    let budgetPercent = Math.round((left / allowance) * 100);
+    // Cap it at 0% if they overspend
+    if (budgetPercent < 0) budgetPercent = 0; 
+    
+    document.getElementById('card-budget-pct').innerText = budgetPercent + "%";
+    document.getElementById('card-budget-left').innerText = "PKR " + left.toLocaleString() + " Left";
+}
