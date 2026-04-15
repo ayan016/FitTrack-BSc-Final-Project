@@ -1,7 +1,6 @@
 // 1. THE WEIGHT LINE GRAPH
-// 1. THE WEIGHT LINE GRAPH
 let latestWeight = Number(localStorage.getItem('currentWeight')) || 79;
-let startWeight = 83; // Your starting weight
+let startWeight = Number(localStorage.getItem('userStartWeight')) || 83;
 
 // Let's calculate a smooth curve so the graph never looks broken
 let totalChange = startWeight - latestWeight;

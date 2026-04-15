@@ -49,6 +49,7 @@ async function loadUserProfile() {
             if (setName) setName.value = data.first_name;
             if (setHeight) setHeight.value = data.height_cm;
             if (setStartWeight) setStartWeight.value = data.starting_weight;
+            localStorage.setItem('userStartWeight', data.starting_weight);
             if (setTargetWeight) setTargetWeight.value = data.target_weight;
             if (setAllowance) setAllowance.value = data.monthly_allowance_pkr;
 
@@ -64,7 +65,6 @@ loadUserProfile();
 const bmiBtn = document.getElementById('calc-bmi');
 if (bmiBtn) {
     bmiBtn.addEventListener('click', function() {
-        console.log("The button is actually awake!");
 
         let weight = document.getElementById('weight').value;
         let heightCm = document.getElementById('height').value;

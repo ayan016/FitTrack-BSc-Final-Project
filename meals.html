@@ -3,123 +3,174 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FitTrack - Meal Hub</title>
-    
+    <title>FitTrack | Meal Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    
     <style>
-        body {
-            background-color: #f8f9fa; 
-            margin: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-       
-        .main-header {
-            background-color: #1f272b; 
-            color: white;
-            padding: 15px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-       
-        .main-header h1 {
-            margin: 0;
-            font-size: 24px;
-            color: #28a745; 
-        }
-        .main-header h1 span {
-            color: white;
-        }
-        
-        .back-link {
-            color: white;
-            text-decoration: none;
-            border: 1px solid #28a745;
-            padding: 8px 16px;
-            border-radius: 6px;
-            font-size: 14px;
-        }
-
-        .back-link:hover {
-            background-color: #28a745;
-        }
-        
         .meal-container {
-            width: 85%;
-            margin: 30px auto;
+            padding: 30px 20px;
         }
-
-       
-        .meal-container h2 {
-            color: #28a745; 
-            margin-bottom: 25px;
-        }
-        
         .recipe-grid {
-            display: flex;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
             gap: 25px;
         }
-        
-       
         .recipe-card {
             background: white;
             border-radius: 12px;
-            width: 260px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05); 
-            padding-bottom: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        
+        .recipe-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 24px rgba(0,0,0,0.1);
+        }
         .card-image {
             height: 140px;
             width: 100%;
-            border-top-left-radius: 12px;
-            border-top-right-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
         }
-        
         .card-content {
             padding: 20px;
         }
-        
-        h3 {
+        .card-content h3 {
             margin-top: 0;
-            font-size: 18px;
-            color: #333;
+            font-size: 16px;
+            color: #2c3e50;
             margin-bottom: 8px;
         }
-
-        p {
-            color: #777;
-            font-size: 14px;
-            line-height: 1.4;
+        .card-content p {
+            color: #7f8c8d;
+            font-size: 13px;
+            line-height: 1.5;
+            margin-bottom: 15px;
         }
-        
-        
         .view-btn {
-            background-color: #28a745; 
+            background: linear-gradient(135deg, #2ecc71, #209653);
             color: white;
             border: none;
             padding: 10px 15px;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
-            font-weight: bold;
-            width: 100%; 
+            font-weight: 600;
+            width: 100%;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        .view-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(39,174,96,0.4);
         }
 
-        .view-btn:hover {
-            background-color: #218838;
+        /* Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal-box {
+            background: white;
+            border-radius: 16px;
+            padding: 35px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+        .modal-close {
+            position: absolute;
+            top: 15px; right: 20px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #7f8c8d;
+            width: auto;
+            padding: 0;
+            box-shadow: none;
+        }
+        .modal-close:hover {
+            color: #e74c3c;
+            transform: none;
+            box-shadow: none;
+        }
+        .modal-emoji {
+            font-size: 48px;
+            text-align: center;
+            display: block;
+            margin-bottom: 15px;
+        }
+        .modal-box h2 {
+            color: #2c3e50;
+            margin-top: 0;
+            text-align: center;
+        }
+        .modal-meta {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .modal-meta span {
+            background: #f0faf4;
+            color: #27ae60;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .modal-box h3 {
+            color: #27ae60;
+            font-size: 15px;
+            margin-bottom: 10px;
+        }
+        .modal-box ul, .modal-box ol {
+            padding-left: 20px;
+            color: #555;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        body.dark-mode .recipe-card {
+            background: #1e1e1e;
+            border: 1px solid #333;
+        }
+        body.dark-mode .card-content h3 {
+            color: #f5f6fa;
+        }
+        body.dark-mode .modal-box {
+            background: #1e1e1e;
+            color: #f5f6fa;
+        }
+        body.dark-mode .modal-box h2, body.dark-mode .modal-box ul, body.dark-mode .modal-box ol {
+            color: #f5f6fa;
+        }
+        body.dark-mode .modal-meta span {
+            background: #2d3436;
         }
     </style>
 </head>
 <body>
 
-   <nav class="sidebar">
+    <nav class="sidebar">
         <h2 style="text-align: center; color: #2ecc71; font-size: 28px; margin-top: 30px; margin-bottom: 5px;">FitTrack</h2>
         <p style="text-align: center; color: #7f8c8d; font-size: 13px; margin-bottom: 40px; margin-top: 0;">Health & Budget</p>
-        
         <ul class="nav-links">
             <li><a href="index.html">📊 Dashboard</a></li>
             <li><a href="analytics.html">📈 Analytics</a></li>
@@ -128,48 +179,178 @@
         </ul>
     </nav>
 
-    <div class="meal-container">
-        <h2>Healthy Meal Hub</h2>
-        <div class="recipe-grid">
-            
-            <div class="recipe-card">
-                <div class="card-image" style="background-color: #fce5cd;"></div>
-                <div class="card-content">
-                    <h3>Oat & Banana Power Bowl</h3>
-                    <p>A high-energy breakfast under 400 calories.</p>
-                    <button class="view-btn">View Recipe</button>
-                </div>
-            </div>
+    <main id="analytics-main">
+        <div class="meal-container">
+            <h2 style="color: #2c3e50; margin-bottom: 8px;">Healthy Meal Hub</h2>
+            <p style="color: #7f8c8d; margin-top: 0; margin-bottom: 25px;">Budget-friendly meals for Pakistani students.</p>
+            <div class="recipe-grid" id="recipe-grid"></div>
+        </div>
+    </main>
 
-            <div class="recipe-card">
-                <div class="card-image" style="background-color: #d9ead3;"></div>
-                <div class="card-content">
-                    <h3>Grilled Chicken Salad</h3>
-                    <p>High protein, low carb lunch option.</p>
-                    <button class="view-btn">View Recipe</button>
-                </div>
-            </div>
-
-            <div class="recipe-card">
-                <div class="card-image" style="background-color: #f4cccc;"></div>
-                <div class="card-content">
-                    <h3>Banana Oat Pancakes</h3>
-                    <p>Guilt-free stack packed with protein. Only 320 calories.</p>
-                    <button class="view-btn">View Recipe</button>
-                </div>
-            </div>
-
-            <div class="recipe-card">
-                <div class="card-image" style="background-color: #cfe2f3;"></div>
-                <div class="card-content">
-                    <h3>Post-Walk Tuna Wrap</h3>
-                    <p>Super light and easy to make after a long walk.</p>
-                    <button class="view-btn">View Recipe</button>
-                </div>
-            </div>
-
+    <!-- Recipe Modal -->
+    <div class="modal-overlay" id="recipe-modal">
+        <div class="modal-box">
+            <button class="modal-close" id="modal-close">✕</button>
+            <span class="modal-emoji" id="modal-emoji"></span>
+            <h2 id="modal-title"></h2>
+            <div class="modal-meta" id="modal-meta"></div>
+            <h3>Ingredients</h3>
+            <ul id="modal-ingredients"></ul>
+            <h3>Instructions</h3>
+            <ol id="modal-steps"></ol>
         </div>
     </div>
 
+    <script>
+        // Restore dark mode
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+        }
+
+        const recipes = [
+            {
+                title: "Oat & Banana Power Bowl",
+                emoji: "🥣",
+                color: "#fce5cd",
+                tagline: "High-energy breakfast under 400 calories.",
+                calories: "~380 kcal",
+                time: "10 mins",
+                cost: "~PKR 80",
+                ingredients: [
+                    "1 cup rolled oats",
+                    "1 ripe banana",
+                    "1 cup milk (or water)",
+                    "1 tsp honey",
+                    "A pinch of cinnamon",
+                    "Optional: handful of nuts"
+                ],
+                steps: [
+                    "Cook oats in milk over medium heat for 5 minutes, stirring occasionally.",
+                    "Slice the banana and place on top.",
+                    "Drizzle honey and sprinkle cinnamon.",
+                    "Add nuts on top for extra protein and healthy fats.",
+                    "Serve immediately while warm."
+                ]
+            },
+            {
+                title: "Grilled Chicken Salad",
+                emoji: "🥗",
+                color: "#d9ead3",
+                tagline: "High protein, low carb lunch option.",
+                calories: "~320 kcal",
+                time: "20 mins",
+                cost: "~PKR 250",
+                ingredients: [
+                    "150g chicken breast",
+                    "Mixed salad leaves",
+                    "1 tomato, diced",
+                    "½ cucumber, sliced",
+                    "1 tbsp olive oil",
+                    "Salt, pepper, and lemon juice"
+                ],
+                steps: [
+                    "Season chicken breast with salt, pepper, and a squeeze of lemon.",
+                    "Grill or pan-fry for 6-7 minutes each side until cooked through.",
+                    "Let it rest for 2 minutes, then slice.",
+                    "Toss salad leaves, tomato, and cucumber together.",
+                    "Top with sliced chicken and drizzle with olive oil."
+                ]
+            },
+            {
+                title: "Banana Oat Pancakes",
+                emoji: "🥞",
+                color: "#f4cccc",
+                tagline: "Guilt-free stack packed with protein. Only 320 calories.",
+                calories: "~320 kcal",
+                time: "15 mins",
+                cost: "~PKR 60",
+                ingredients: [
+                    "1 ripe banana",
+                    "2 eggs",
+                    "½ cup oats",
+                    "A pinch of cinnamon",
+                    "Optional: 1 tbsp peanut butter"
+                ],
+                steps: [
+                    "Mash the banana well in a bowl until smooth.",
+                    "Crack in the eggs and mix thoroughly.",
+                    "Stir in oats and cinnamon to form a thick batter.",
+                    "Heat a non-stick pan over medium heat with a little oil.",
+                    "Pour small rounds of batter and cook 2 minutes each side.",
+                    "Serve with honey or peanut butter drizzle."
+                ]
+            },
+            {
+                title: "Post-Walk Tuna Wrap",
+                emoji: "🌯",
+                color: "#cfe2f3",
+                tagline: "Super light and easy to make after a long walk.",
+                calories: "~280 kcal",
+                time: "5 mins",
+                cost: "~PKR 150",
+                ingredients: [
+                    "1 large roti or tortilla wrap",
+                    "1 small tin of tuna (in water)",
+                    "2 tbsp yoghurt or light mayo",
+                    "Shredded lettuce",
+                    "Sliced tomato",
+                    "Salt and pepper to taste"
+                ],
+                steps: [
+                    "Drain the tuna and mix with yoghurt, salt, and pepper.",
+                    "Lay the wrap flat and spread the tuna mixture in the centre.",
+                    "Add lettuce and tomato slices on top.",
+                    "Roll tightly, folding in the sides first.",
+                    "Slice in half and serve immediately."
+                ]
+            }
+        ];
+
+        // Render recipe cards
+        const grid = document.getElementById('recipe-grid');
+        recipes.forEach((recipe, index) => {
+            const card = document.createElement('div');
+            card.className = 'recipe-card';
+            card.innerHTML = `
+                <div class="card-image" style="background-color: ${recipe.color};">${recipe.emoji}</div>
+                <div class="card-content">
+                    <h3>${recipe.title}</h3>
+                    <p>${recipe.tagline}</p>
+                    <button class="view-btn" data-index="${index}">View Recipe</button>
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+
+        // Modal logic
+        const modal = document.getElementById('recipe-modal');
+        const modalClose = document.getElementById('modal-close');
+
+        document.getElementById('recipe-grid').addEventListener('click', function(e) {
+            if (e.target.classList.contains('view-btn')) {
+                const idx = e.target.getAttribute('data-index');
+                const r = recipes[idx];
+
+                document.getElementById('modal-emoji').innerText = r.emoji;
+                document.getElementById('modal-title').innerText = r.title;
+
+                document.getElementById('modal-meta').innerHTML =
+                    `<span>🔥 ${r.calories}</span><span>⏱ ${r.time}</span><span>💰 ${r.cost}</span>`;
+
+                document.getElementById('modal-ingredients').innerHTML =
+                    r.ingredients.map(i => `<li>${i}</li>`).join('');
+
+                document.getElementById('modal-steps').innerHTML =
+                    r.steps.map(s => `<li>${s}</li>`).join('');
+
+                modal.classList.add('active');
+            }
+        });
+
+        modalClose.addEventListener('click', () => modal.classList.remove('active'));
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) modal.classList.remove('active');
+        });
+    </script>
 </body>
 </html>

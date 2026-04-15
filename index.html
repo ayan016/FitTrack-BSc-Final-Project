@@ -12,7 +12,6 @@
     <nav class="sidebar">
         <h2 style="text-align: center; color: #2ecc71; font-size: 28px; margin-top: 30px; margin-bottom: 5px;">FitTrack</h2>
         <p style="text-align: center; color: #7f8c8d; font-size: 13px; margin-bottom: 40px; margin-top: 0;">Health & Budget</p>
-        
         <ul class="nav-links">
             <li><a href="index.html" class="active">📊 Dashboard</a></li>
             <li><a href="analytics.html">📈 Analytics</a></li>
@@ -20,19 +19,20 @@
             <li><a href="settings.html">⚙️ Settings</a></li>
         </ul>
     </nav>
-<main id="dashboard">
-        <div class="profile-header" style="grid-column: 1 / -1; display: flex; align-items: center; gap: 15px; margin-bottom: 30px; margin-top: 10px;">
-            <div id="user-avatar" style="width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #2ecc71, #209653); color: white; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 600; box-shadow: 0 4px 10px rgba(39, 174, 96, 0.3);">
+
+    <main id="dashboard">
+
+        <div class="profile-header" style="grid-column: 1 / -1; display: flex; align-items: center; gap: 15px; margin-bottom: 30px; margin-top: 10px; flex-wrap: wrap;">
+            <div id="user-avatar" style="width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #2ecc71, #209653); color: white; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 600; box-shadow: 0 4px 10px rgba(39, 174, 96, 0.3); flex-shrink: 0;">
                 ?
             </div>
             <div>
                 <h2 id="user-greeting" style="margin: 0; color: #2c3e50; font-size: 22px;">Welcome back!</h2>
                 <p style="margin: 0; color: #7f8c8d; font-size: 14px;">Let's hit those daily targets.</p>
             </div>
-            
-            <div style="margin-left: auto; display: flex; gap: 15px; align-items: center;">
-                <div style="background: #fff3cd; padding: 8px 15px; border-radius: 20px; color: #d35400; font-weight: 600; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-                    🔥 3 Day Streak
+            <div style="margin-left: auto; display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
+                <div id="streak-display" style="background: #fff3cd; padding: 8px 15px; border-radius: 20px; color: #d35400; font-weight: 600; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                    🔥 0 Day Streak
                 </div>
                 <button id="toggle-dark" style="background: #2c3e50; width: auto; padding: 8px 15px; border-radius: 20px; font-size: 14px; margin: 0; box-shadow: none; cursor: pointer;">🌙 Dark Mode</button>
             </div>
@@ -41,53 +41,54 @@
         <section id="bmi-section">
             <h2>BMI Calculator</h2>
             <div class="input-group">
-    <label>Weight (kg):</label>
-    <input type="number" id="weight" placeholder="e.g. 70">
-</div>
-<div class="input-group">
-    <label>Height (cm):</label>
-    <input type="number" id="height" placeholder="e.g. 175">
-</div>
-<button id="calc-bmi">Calculate My BMI</button>
-<div id="bmi-result"></div>
+                <label>Weight (kg):</label>
+                <input type="number" id="weight" placeholder="e.g. 70" min="1" max="300">
+            </div>
+            <div class="input-group">
+                <label>Height (cm):</label>
+                <input type="number" id="height" placeholder="e.g. 175" min="1" max="300">
+            </div>
+            <button id="calc-bmi">Calculate My BMI</button>
+            <div id="bmi-result"></div>
         </section>
-        </section> <section id="budget-section">
+
+        <section id="budget-section">
             <h2>PKR Budget Tracker</h2>
             <div class="input-container">
                 <div class="input-group">
                     <label>Monthly Allowance (PKR):</label>
-                    <input type="number" id="allowance" placeholder="e.g. 15000">
+                    <input type="number" id="allowance" placeholder="e.g. 15000" min="1">
                 </div>
                 <div class="input-group">
                     <label>Daily Expense (PKR):</label>
-                    <input type="number" id="expense" placeholder="e.g. 500">
+                    <input type="number" id="expense" placeholder="e.g. 500" min="1">
                 </div>
                 <button id="calc-budget">Calculate Remaining Budget</button>
             </div>
-            <div id="budget-result">
-                </div>
+            <div id="budget-result"></div>
         </section>
+
         <section id="calorie-section">
             <h2>Calorie Tracker</h2>
             <div class="input-container">
                 <div class="input-group">
                     <label>Daily Goal (kcal):</label>
-                    <input type="number" id="goal" placeholder="e.g. 1600">
+                    <input type="number" id="goal" placeholder="e.g. 1600" min="1">
                 </div>
                 <div class="input-group">
                     <label>Eaten Today (kcal):</label>
-                    <input type="number" id="eaten" placeholder="e.g. 450">
+                    <input type="number" id="eaten" placeholder="e.g. 450" min="0">
                 </div>
                 <button id="calc-cals">Check Calories</button>
             </div>
-            <div id="cal-result">
-                </div>
+            <div id="cal-result"></div>
         </section>
-        <section id="knowledge-base" style="margin-top: 40px;">
+
+        <section id="knowledge-base" style="grid-column: 1 / -1; margin-top: 10px;">
             <h2 style="text-align: center; width: 100%; margin-bottom: 20px;">Fitness & Nutrition Reference</h2>
-            
+
             <div class="tables-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
-                
+
                 <div class="data-table">
                     <h3>Calories in Common Foods</h3>
                     <table style="width: 100%; border-collapse: collapse;">
@@ -96,21 +97,11 @@
                             <th style="padding: 10px; text-align: left;">Serving</th>
                             <th style="padding: 10px; text-align: left;">Calories</th>
                         </tr>
-                        <tr style="border-bottom: 1px solid #ddd;">
-                            <td style="padding: 10px;">Chicken Breast</td><td style="padding: 10px;">100g</td><td style="padding: 10px;">165</td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid #ddd;">
-                            <td style="padding: 10px;">Roti / Chapati</td><td style="padding: 10px;">1 piece</td><td style="padding: 10px;">120</td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid #ddd;">
-                            <td style="padding: 10px;">Eggs</td><td style="padding: 10px;">1 large</td><td style="padding: 10px;">78</td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid #ddd;">
-                            <td style="padding: 10px;">Lentils (Daal)</td><td style="padding: 10px;">1 cup cooked</td><td style="padding: 10px;">230</td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid #ddd;">
-                            <td style="padding: 10px;">Apple</td><td style="padding: 10px;">1 medium</td><td style="padding: 10px;">59</td>
-                        </tr>
+                        <tr style="border-bottom: 1px solid #ddd;"><td style="padding: 10px;">Chicken Breast</td><td style="padding: 10px;">100g</td><td style="padding: 10px;">165</td></tr>
+                        <tr style="border-bottom: 1px solid #ddd;"><td style="padding: 10px;">Roti / Chapati</td><td style="padding: 10px;">1 piece</td><td style="padding: 10px;">120</td></tr>
+                        <tr style="border-bottom: 1px solid #ddd;"><td style="padding: 10px;">Eggs</td><td style="padding: 10px;">1 large</td><td style="padding: 10px;">78</td></tr>
+                        <tr style="border-bottom: 1px solid #ddd;"><td style="padding: 10px;">Lentils (Daal)</td><td style="padding: 10px;">1 cup cooked</td><td style="padding: 10px;">230</td></tr>
+                        <tr style="border-bottom: 1px solid #ddd;"><td style="padding: 10px;">Apple</td><td style="padding: 10px;">1 medium</td><td style="padding: 10px;">59</td></tr>
                     </table>
                 </div>
 
@@ -122,26 +113,16 @@
                             <th style="padding: 10px; text-align: left;">Intensity</th>
                             <th style="padding: 10px; text-align: left;">Burned</th>
                         </tr>
-                        <tr style="border-bottom: 1px solid #ddd;">
-                            <td style="padding: 10px;">Brisk Walking</td><td style="padding: 10px;">Moderate</td><td style="padding: 10px;">~300 kcal</td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid #ddd;">
-                            <td style="padding: 10px;">Running</td><td style="padding: 10px;">High</td><td style="padding: 10px;">~600 kcal</td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid #ddd;">
-                            <td style="padding: 10px;">Weightlifting</td><td style="padding: 10px;">Varies</td><td style="padding: 10px;">~220 kcal</td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid #ddd;">
-                            <td style="padding: 10px;">Cycling</td><td style="padding: 10px;">Moderate</td><td style="padding: 10px;">~450 kcal</td>
-                        </tr>
+                        <tr style="border-bottom: 1px solid #ddd;"><td style="padding: 10px;">Brisk Walking</td><td style="padding: 10px;">Moderate</td><td style="padding: 10px;">~300 kcal</td></tr>
+                        <tr style="border-bottom: 1px solid #ddd;"><td style="padding: 10px;">Running</td><td style="padding: 10px;">High</td><td style="padding: 10px;">~600 kcal</td></tr>
+                        <tr style="border-bottom: 1px solid #ddd;"><td style="padding: 10px;">Weightlifting</td><td style="padding: 10px;">Varies</td><td style="padding: 10px;">~220 kcal</td></tr>
+                        <tr style="border-bottom: 1px solid #ddd;"><td style="padding: 10px;">Cycling</td><td style="padding: 10px;">Moderate</td><td style="padding: 10px;">~450 kcal</td></tr>
                     </table>
                 </div>
 
             </div>
         </section>
-        </main>
 
-    <footer>
     </main>
 
     <footer>
@@ -149,8 +130,5 @@
     </footer>
 
     <script type="module" src="script.js"></script>
-</body>
-</html>
-  </main>
 </body>
 </html>
