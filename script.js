@@ -1,203 +1,341 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
 import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
+//  Firebase Setup infoo
 const firebaseConfig = {
-  apiKey: "AIzaSyA2c9lMr-knuLL1r8CRW_MvtMM1hqSP6gU",
-  authDomain: "fittrack-b0ee8.firebaseapp.com",
-  projectId: "fittrack-b0ee8",
-  storageBucket: "fittrack-b0ee8.firebasestorage.app",
-  messagingSenderId: "968942652478",
-  appId: "1:968942652478:web:fe4eb034783068966f956f"
+    apiKey: "AIzaSyA2c9lMr-knuLL1r8CRW_MvtMM1hqSP6gU",
+    authDomain: "fittrack-b0ee8.firebaseapp.com",
+    projectId: "fittrack-b0ee8",
+    storageBucket: "fittrack-b0ee8.firebasestorage.app",
+    messagingSenderId: "968942652478",
+    appId: "1:968942652478:web:fe4eb034783068966f956f"
 };
 
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+const db  = getFirestore(app);
+const auth = getAuth(app);
 
-// Function to pull user data when the page loads auto
-async function loadUserProfile() {
+// Dark Mode setup 
+if (localStorage.getItem('darkMode') === 'true') {
+    document.body.classList.add('dark-mode');
+}
+
+//  Authentication — anonymous sign-in per browser session 
+// Each user gets their own Firestore document (keyed by uid), so
+// no one else can read or overwrite your data.
+let currentUserId = null;
+
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        currentUserId = user.uid;
+        loadUserProfile(user.uid);
+    } else {
+        signInAnonymously(auth).catch((err) => console.error("Auth error:", err));
+    }
+});
+
+// Too Load user profile from Firestore 
+async function loadUserProfile(uid) {
     try {
-        const docRef = doc(db, "users", "my_profile");
+        const docRef  = doc(db, "users", uid);
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
             const data = docSnap.data();
-            console.log("Cloud Data successfully loaded:", data);
 
-            // NEW: Update the greeting and the avatar letter
+            // Dashboard: greeting and avatar
             const greeting = document.getElementById('user-greeting');
-            const avatar = document.getElementById('user-avatar');
-            
+            const avatar   = document.getElementById('user-avatar');
             if (greeting && data.first_name) {
                 greeting.innerText = "Welcome back, " + data.first_name + "!";
-                avatar.innerText = data.first_name.charAt(0).toUpperCase();
+                avatar.innerText   = data.first_name.charAt(0).toUpperCase();
             }
 
-            // Populate the Dashboard Inputs
-            const dashHeight = document.getElementById('height');
+            // Dashboard: pre fill height and allowance inputs
+            const dashHeight    = document.getElementById('height');
             const dashAllowance = document.getElementById('allowance');
+            if (dashHeight)    dashHeight.value    = data.height_cm || '';
+            if (dashAllowance) dashAllowance.value = data.monthly_allowance_pkr || '';
 
-            if (dashHeight) dashHeight.value = data.height_cm;
-            if (dashAllowance) dashAllowance.value = data.monthly_allowance_pkr;
-
-            // Populate the Settings Page Inputs
-            const setName = document.getElementById('setting-name');
-            const setHeight = document.getElementById('setting-height');
-            const setStartWeight = document.getElementById('setting-start-weight');
+            // Settings: populate all fields
+            const setName         = document.getElementById('setting-name');
+            const setHeight       = document.getElementById('setting-height');
+            const setStartWeight  = document.getElementById('setting-start-weight');
             const setTargetWeight = document.getElementById('setting-target-weight');
-            const setAllowance = document.getElementById('setting-allowance');
+            const setAllowance    = document.getElementById('setting-allowance');
 
-            if (setName) setName.value = data.first_name;
-            if (setHeight) setHeight.value = data.height_cm;
-            if (setStartWeight) setStartWeight.value = data.starting_weight;
-            localStorage.setItem('userStartWeight', data.starting_weight);
-            if (setTargetWeight) setTargetWeight.value = data.target_weight;
-            if (setAllowance) setAllowance.value = data.monthly_allowance_pkr;
+            if (setName)         setName.value         = data.first_name || '';
+            if (setHeight)       setHeight.value       = data.height_cm || '';
+            if (setStartWeight)  setStartWeight.value  = data.starting_weight || '';
+            if (setTargetWeight) setTargetWeight.value = data.target_weight || '';
+            if (setAllowance)    setAllowance.value    = data.monthly_allowance_pkr || '';
 
-        } else {
-            console.log("No profile found in the cloud yet.");
-        }
+            // Cache locally so analytics.js can read them without a Firestore call
+            if (data.starting_weight) localStorage.setItem('startingWeight', data.starting_weight);
+            if (data.target_weight)   localStorage.setItem('targetWeight',   data.target_weight);
+            if (data.weight_history)  localStorage.setItem('weightHistory', JSON.stringify(data.weight_history));
+        }  
     } catch (error) {
-        console.error("Error fetching profile: ", error);
+        console.error("Error fetching profile:", error);
     }
 }
-loadUserProfile();
 
+//  Streak  calculated from real logged entries 
+function calculateStreak() {
+    const history = JSON.parse(localStorage.getItem('weightHistory') || '[]');
+    if (history.length === 0) return 0;
+
+    const loggedDates = new Set(history.map(e => e.date));
+
+    let streak = 0;
+    const checkDate = new Date();
+
+    // Walk backwards day by day from today
+    for (let i = 0; i < 365; i++) {
+        const dateStr = checkDate.toISOString().split('T')[0];
+        if (loggedDates.has(dateStr)) {
+            streak++;
+            checkDate.setDate(checkDate.getDate() - 1);
+        } else {
+            break; // Streak is broken
+        }
+    }
+    return streak;
+}
+
+function updateStreakDisplay() {
+    const streakEl = document.getElementById('streak-display');
+    if (streakEl) {
+        streakEl.innerText = `🔥 ${calculateStreak()} Day Streak`;
+    }
+}
+updateStreakDisplay();
+
+//  BMI Calculator 
 const bmiBtn = document.getElementById('calc-bmi');
 if (bmiBtn) {
-    bmiBtn.addEventListener('click', function() {
+    bmiBtn.addEventListener('click', function () {
+        const weight   = parseFloat(document.getElementById('weight').value);
+        const heightCm = parseFloat(document.getElementById('height').value);
+        const resultEl = document.getElementById('bmi-result');
 
-        let weight = document.getElementById('weight').value;
-        let heightCm = document.getElementById('height').value;
-
-        if (weight > 0 && heightCm > 0) {
-            let heightM = heightCm / 100;
-            let bmi = (weight / (heightM * heightM)).toFixed(1);
-            
-            let category = "";
-            let smartAdvice = "";
-
-            if (bmi < 18.5) {
-                category = "Underweight";
-                smartAdvice = "Aim for 2000+ calories. Eat calorie-dense, affordable foods like eggs and nuts.";
-            } else if (bmi >= 18.5 && bmi <= 24.9) {
-                category = "Normal Weight";
-                smartAdvice = "Maintain your current diet! Adding a daily 8km brisk walk is perfect for staying healthy without strict calorie cuts.";
-            } else {
-                category = "Overweight";
-                smartAdvice = "Target 1500-1600 calories to safely drop weight. Focus on chicken breast and lentils (daal) to stay full on a student budget.";
-            }
-
-            
-            localStorage.setItem('currentWeight', weight);
-            localStorage.setItem('currentBMI', bmi);
-            localStorage.setItem('bmiCategory', category);
-
-            document.getElementById('bmi-result').innerHTML = 
-                "<strong>Your BMI:</strong> " + bmi + " (" + category + ")<br><br>" +
-                "<strong>💡 Smart Plan:</strong> " + smartAdvice;
-                
-        } else {
-            document.getElementById('bmi-result').innerHTML = "Please enter valid numbers!";
+        // Input validation
+        if (!weight || !heightCm || weight <= 0 || weight > 300 || heightCm <= 50 || heightCm > 300) {
+            resultEl.innerHTML = '<span style="color:#e74c3c;">⚠️ Please enter a valid weight (1–300 kg) and height (50–300 cm).</span>';
+            return;
         }
+
+        const heightM = heightCm / 100;
+        const bmi     = (weight / (heightM * heightM)).toFixed(1);
+
+        let category, smartAdvice, color;
+
+        if (bmi < 18.5) {
+            category    = "Underweight";
+            color       = "#3498db";
+            smartAdvice = "Aim for 2000+ calories. Eat calorie-dense, affordable foods like eggs, daal, and nuts.";
+        } else if (bmi <= 24.9) {
+            category    = "Normal Weight";
+            color       = "#2ecc71";
+            smartAdvice = "Maintain your current diet! A daily brisk walk is perfect for staying healthy without strict calorie cuts.";
+        } else if (bmi <= 29.9) {
+            category    = "Overweight";
+            color       = "#f39c12";
+            smartAdvice = "Target 1500–1600 calories to safely drop weight. Focus on chicken breast and lentils (daal) to stay full on a student budget.";
+        } else {
+            category    = "Obese";
+            color       = "#e74c3c";
+            smartAdvice = "Consider consulting a doctor for a personalised plan. Start with low-impact exercise like daily walking.";
+        }
+
+        
+        const history   = JSON.parse(localStorage.getItem('weightHistory') || '[]');
+        const today     = new Date().toISOString().split('T')[0];
+        const todayIdx  = history.findIndex(e => e.date === today);
+
+        if (todayIdx >= 0) {
+            history[todayIdx].weight = weight;
+        } else {
+            history.push({ date: today, weight });
+        }
+
+        // To Cap at 30 entries to keep localStorage lean
+        if (history.length > 30) history.shift();
+        localStorage.setItem('weightHistory', JSON.stringify(history));
+        // Too Sync the updated history to the cloud automatically
+        if (currentUserId) {
+            setDoc(doc(db, "users", currentUserId), { 
+                weight_history: history 
+            }, { merge: true }).catch(err => console.error("Cloud sync failed:", err));
+        }
+
+        // Save current values for analytics page
+        localStorage.setItem('currentWeight', weight);
+        localStorage.setItem('currentBMI',    bmi);
+        localStorage.setItem('bmiCategory',   category);
+
+        resultEl.innerHTML =
+            `<strong>Your BMI:</strong> <span style="color:${color}; font-size:20px;">${bmi}</span> ` +
+            `<span style="color:${color};">(${category})</span><br><br>` +
+            `<strong>💡 Smart Plan:</strong> ${smartAdvice}`;
+
+        updateStreakDisplay();
     });
 }
 
+//  Budget Calculator 
 const budgetBtn = document.getElementById('calc-budget');
 if (budgetBtn) {
-    budgetBtn.addEventListener('click', function() {
-        let allowance = document.getElementById('allowance').value;
-        let expense = document.getElementById('expense').value;
+    budgetBtn.addEventListener('click', function () {
+        const allowance = parseFloat(document.getElementById('allowance').value);
+        const expense   = parseFloat(document.getElementById('expense').value);
+        const resultEl  = document.getElementById('budget-result');
 
-        if (allowance > 0 && expense > 0) {
-            let totalMonthlyExpense = expense * 30;
-            let remaining = allowance - totalMonthlyExpense;
-            
-            // Too Save the math to browser storage so the Analytics page can see it
-            localStorage.setItem('savedExpense', totalMonthlyExpense);
-            localStorage.setItem('savedRemaining', remaining);
-            localStorage.setItem('totalAllowance', allowance);
-
-            let message = "";
-            if (remaining > 0) {
-                message = "Good job! You will save " + remaining + " PKR this month.";
-            } else if (remaining < 0) {
-                message = "Watch out! You are over budget by " + Math.abs(remaining) + " PKR.";
-            } else {
-                message = "You are breaking exactly even this month.";
-            }
-
-            document.getElementById('budget-result').innerHTML = message;
-        } else {
-            document.getElementById('budget-result').innerHTML = "Please enter your budget details!";
+        if (!allowance || !expense || allowance <= 0 || expense <= 0) {
+            resultEl.innerHTML = '<span style="color:#e74c3c;">⚠️ Please enter valid budget amounts.</span>';
+            return;
         }
+
+        const totalMonthlyExpense = expense * 30;
+        const remaining           = allowance - totalMonthlyExpense;
+
+        // Save to localStorage so analytics page can display them
+        localStorage.setItem('savedExpense',    totalMonthlyExpense);
+        localStorage.setItem('savedRemaining',  remaining);
+        localStorage.setItem('totalAllowance',  allowance);
+
+        let message;
+        if (remaining > 0) {
+            message = `✅ Good job! You will save <strong>PKR ${remaining.toLocaleString()}</strong> this month.`;
+        } else if (remaining < 0) {
+            message = `⚠️ Watch out! You are over budget by <strong>PKR ${Math.abs(remaining).toLocaleString()}</strong>.`;
+        } else {
+            message = "You are breaking exactly even this month.";
+        }
+
+        resultEl.innerHTML = message;
     });
 }
+
+//  Calorie Tracker 
 const calsBtn = document.getElementById('calc-cals');
 if (calsBtn) {
-    calsBtn.addEventListener('click', function() {
-        let goal = document.getElementById('goal').value;
-        let eaten = document.getElementById('eaten').value;
+    calsBtn.addEventListener('click', function () {
+        const goal     = parseFloat(document.getElementById('goal').value);
+        const eaten    = parseFloat(document.getElementById('eaten').value);
+        const resultEl = document.getElementById('cal-result');
 
-        if (goal > 0 && eaten > 0) {
-            let left = goal - eaten;
-            let message = "";
-            
-            if (left > 0) {
-                message = "You have " + left + " calories left for today.";
-            } else if (left < 0) {
-                message = "You are over by " + Math.abs(left) + " calories.";
-            } else {
-                message = "You hit your goal exactly!";
-            }
-
-            document.getElementById('cal-result').innerHTML = message;
-        } else {
-            document.getElementById('cal-result').innerHTML = "Enter your calories!";
+        if (!goal || goal <= 0 || isNaN(eaten) || eaten < 0) {
+            resultEl.innerHTML = '<span style="color:#e74c3c;">⚠️ Please enter valid calorie values.</span>';
+            return;
         }
+
+        const left = goal - eaten;
+        let message;
+
+        if (left > 0) {
+            message = `✅ You have <strong>${left}</strong> calories left for today.`;
+        } else if (left < 0) {
+            message = `⚠️ You are over your goal by <strong>${Math.abs(left)}</strong> calories.`;
+        } else {
+            message = "🎯 You hit your goal exactly!";
+        }
+
+        resultEl.innerHTML = message;
     });
 }
 
+//  Dark Mode Toggle 
 const darkBtn = document.getElementById('toggle-dark');
 if (darkBtn) {
-    darkBtn.addEventListener('click', function() {
-        document.body.classList.toggle('dark-mode');
+    // Set correct button label if dark mode was already active
+    if (document.body.classList.contains('dark-mode')) {
+        darkBtn.innerHTML    = "☀️ Light Mode";
+        darkBtn.style.background = "#f1c40f";
+        darkBtn.style.color      = "#2c3e50";
+    }
 
-        if (document.body.classList.contains('dark-mode')) {
-            this.innerHTML = "☀️ Light Mode";
+    darkBtn.addEventListener('click', function () {
+        document.body.classList.toggle('dark-mode');
+        const isDark = document.body.classList.contains('dark-mode');
+        localStorage.setItem('darkMode', isDark); // Persist across pages
+
+        if (isDark) {
+            this.innerHTML       = "☀️ Light Mode";
             this.style.background = "#f1c40f";
-            this.style.color = "#2c3e50";
+            this.style.color      = "#2c3e50";
         } else {
-            this.innerHTML = "🌙 Dark Mode";
+            this.innerHTML       = "🌙 Dark Mode";
             this.style.background = "#2c3e50";
-            this.style.color = "white";
+            this.style.color      = "white";
         }
     });
 }
 
+//  Save Settings to Firestore 
 const saveButton = document.getElementById('save-settings');
 if (saveButton) {
-    saveButton.addEventListener('click', async function(e) {
+    saveButton.addEventListener('click', async function (e) {
         e.preventDefault();
 
-        let name = document.getElementById('setting-name').value;
-        let height = document.getElementById('setting-height').value;
-        let startWeight = document.getElementById('setting-start-weight').value;
-        let targetWeight = document.getElementById('setting-target-weight').value;
-        let allowance = document.getElementById('setting-allowance').value;
+        const name         = document.getElementById('setting-name').value.trim();
+        const height       = parseFloat(document.getElementById('setting-height').value);
+        const startWeight  = parseFloat(document.getElementById('setting-start-weight').value);
+        const targetWeight = parseFloat(document.getElementById('setting-target-weight').value);
+        const allowance    = parseFloat(document.getElementById('setting-allowance').value);
+
+        if (!name || !height || !startWeight || !targetWeight || !allowance) {
+            alert('Please fill in all fields before saving.');
+            return;
+        }
+
+        if (!currentUserId) {
+            alert('Still connecting to the cloud. Please wait a moment and try again.');
+            return;
+        }
 
         try {
-            await setDoc(doc(db, "users", "my_profile"), {
-                first_name: name,
-                height_cm: Number(height),
-                starting_weight: Number(startWeight),
-                target_weight: Number(targetWeight),
-                monthly_allowance_pkr: Number(allowance)
+            await setDoc(doc(db, "users", currentUserId), {
+                first_name:             name,
+                height_cm:              height,
+                starting_weight:        startWeight,
+                target_weight:          targetWeight,
+                monthly_allowance_pkr:  allowance
             });
-            
-            alert('Cloud sync complete! Your settings are saved.');
+
+            // Mirror to localStorage so analytics.js can read them instantly
+            localStorage.setItem('startingWeight', startWeight);
+            localStorage.setItem('targetWeight',   targetWeight);
+
+            // Show inline success message
+            const statusEl = document.getElementById('sync-status');
+            if (statusEl) {
+                statusEl.style.display = 'block';
+                setTimeout(() => { statusEl.style.display = 'none'; }, 3000);
+            } else {
+                alert('Settings saved and synced to cloud!');
+            }
+
         } catch (error) {
-            console.error("Firebase Error: ", error);
-            alert('Something went wrong. Check the console.');
+            console.error("Firebase save error:", error);
+            alert('Something went wrong. Please check your connection and try again.');
+        }
+    });
+}
+
+//  Clear All Local Data 
+const clearBtn = document.getElementById('clear-data');
+if (clearBtn) {
+    clearBtn.addEventListener('click', function () {
+        if (confirm('Are you sure? This will delete all your locally stored weight history, BMI, and budget data. Your cloud profile will remain.')) {
+            const keysToRemove = [
+                'weightHistory', 'currentWeight', 'currentBMI', 'bmiCategory',
+                'savedExpense', 'savedRemaining', 'totalAllowance',
+                'startingWeight', 'targetWeight', 'darkMode'
+            ];
+            keysToRemove.forEach(k => localStorage.removeItem(k));
+            alert('Local data cleared. Reload the page to see changes.');
         }
     });
 }
