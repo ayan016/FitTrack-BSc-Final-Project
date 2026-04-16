@@ -1,196 +1,18 @@
-body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #f4f7f6; 
-    color: #2c3e50; 
-    margin: 0;
-    padding: 0;
-}
-
-header {
-    background-color: #2c3e50;
-    color: white;
-    padding: 1rem;
-    text-align: center;
-    border-radius: 8px;
-    margin-bottom: 20px;
-}
-
-#dashboard {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    max-width: 1000px; 
-    margin: 0 auto;
-    display: grid; 
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
-    gap: 30px;
-    align-items: start;
-}
-
-h2 {
-    color: #27ae60;
-}
-
-.input-group {
-    margin-bottom: 15px;
-    text-align: left;
-}
-
-label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+/*  Base  */
+*, *::before, *::after {
     box-sizing: border-box;
 }
 
-button {
-    width: 100%;
-    padding: 12px;
-    background: linear-gradient(135deg, #2ecc71, #209653); 
-    color: white;
-    border: none;
-    border-radius: 8px; 
-    font-size: 16px;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease; 
-    box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3); 
-}
-
-button:hover {
-    transform: translateY(-2px); 
-    box-shadow: 0 6px 18px rgba(39, 174, 96, 0.4); 
-}
-
-input[type="number"] {
-    width: 100%;
-    padding: 10px;
-    border: 2px solid #e0e6ed;
-    border-radius: 8px;
-    font-family: 'Poppins', sans-serif;
-    font-size: 14px;
-    transition: border-color 0.3s ease;
-}
-
-input[type="number"]:focus {
-    outline: none;
-    border-color: #27ae60;
-}
-
-/* Here I am adding the Floating Card Effect */
-#dashboard > section, .data-table {
-    background: #ffffff;
-    padding: 25px;
-    border-radius: 15px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-#dashboard > section:hover, .data-table:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1); 
-}
-
-
-.data-table table {
-    table-layout: fixed; 
-}
-
-* {
-    box-sizing: border-box; 
-}
-
-
-.tables-grid {
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)) !important;
-}
-.data-table th, .data-table td {
-    padding: 12px 10px !important;
-    white-space: nowrap; 
-}
-
-
-body.dark-mode {
-    background-color: #121212;
-}
-body.dark-mode #dashboard > section, 
-body.dark-mode .data-table {
-    background: #1e1e1e;
-    border: 1px solid #333;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-}
-body.dark-mode h2, 
-body.dark-mode h3, 
-body.dark-mode p, 
-body.dark-mode label,
-body.dark-mode td,
-body.dark-mode th {
-    color: #f5f6fa !important;
-}
-body.dark-mode input[type="number"] {
-    background: #2d3436;
-    color: #fff;
-    border-color: #444;
-}
-body.dark-mode tr {
-    border-bottom: 1px solid #444 !important;
-}
-
-/* adding Dashboard Grid to improve looks  */
-#dashboard {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 25px;
-}
-
-#dashboard > section {
-    background: #ffffff;
-    padding: 25px;
-    border-radius: 15px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-    border: 1px solid #eaeaea; 
-}
-
-.data-table table {
-    width: 100% !important;
-    table-layout: auto !important;
-}
-
-.data-table th, .data-table td {
-    padding: 15px 10px !important;
-    white-space: normal !important;
-    text-align: left !important;
-}
-
-.tables-grid {
-    display: grid;
-    grid-template-columns: 1fr; 
-    gap: 30px;
-    width: 100%;
-    margin-top: 30px;
-}
-
-/*  Fixing the Dark Mode Background as it isnt working properlyy  */
-body.dark-mode main,
-body.dark-mode #dashboard,
-body.dark-mode .container {
-    background-color: #121212 !important;
-}
-
-/* Code for Sidebar Navigation Menu  */
 body {
-    padding-left: 260px !important; 
+    font-family: 'Poppins', sans-serif;
+    background-color: #f4f7f6;
+    color: #2c3e50;
+    margin: 0;
+    padding: 0;
+    padding-left: 260px; /* offset for fixed sidebar */
 }
 
+/*  Sidebar  */
 .sidebar {
     position: fixed;
     top: 0;
@@ -198,10 +20,11 @@ body {
     width: 260px;
     height: 100vh;
     background: #1e272e;
-    box-shadow: 4px 0 15px rgba(0,0,0,0.05);
+    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.08);
     z-index: 1000;
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
 }
 
 .nav-links {
@@ -218,20 +41,250 @@ body {
     padding: 16px 30px;
     color: #a4b0be;
     text-decoration: none;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 500;
     border-left: 4px solid transparent;
-    transition: 0.2s ease-in-out;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
 }
 
-.nav-links li a:hover, .nav-links li a.active {
+.nav-links li a:hover,
+.nav-links li a.active {
     background: #2f3640;
     color: #2ecc71;
-    border-left: 4px solid #2ecc71;
+    border-left-color: #2ecc71;
 }
 
-/* Dark Mode theme for sidebar  */
+/*  Main content area  */
+#dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    padding: 30px;
+    max-width: 1100px;
+    margin: 0 auto;
+    align-items: start;
+}
+
+/* Analytics and other pages use a simpler layout */
+#analytics-main {
+    padding: 30px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+/*  Section Cards  */
+#dashboard > section,
+.data-table {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.07);
+    border: 1px solid #eaeaea;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#dashboard > section:hover,
+.data-table:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
+}
+
+/*  Typography  */
+h2 {
+    color: #27ae60;
+    margin-top: 0;
+}
+
+h3 {
+    color: #2c3e50;
+    margin-top: 0;
+}
+
+/*  Form Elements  */
+.input-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 6px;
+    color: #2c3e50;
+}
+
+input[type="text"],
+input[type="number"] {
+    width: 100%;
+    padding: 10px 12px;
+    border: 2px solid #e0e6ed;
+    border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+    background: #fff;
+    color: #2c3e50;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus {
+    outline: none;
+    border-color: #27ae60;
+}
+
+/*  Buttons  */
+button {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #2ecc71, #209653);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(39, 174, 96, 0.4);
+}
+
+/*  Tables  */
+.data-table table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto;
+}
+
+.data-table th,
+.data-table td {
+    padding: 12px 10px;
+    text-align: left;
+    white-space: normal;
+}
+
+/*  Footer  */
+footer {
+    text-align: center;
+    color: #7f8c8d;
+    font-size: 13px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+/* = Dark Mode  */
+body.dark-mode {
+    background-color: #121212;
+    color: #f5f6fa;
+}
+
+body.dark-mode #dashboard > section,
+body.dark-mode .data-table,
+body.dark-mode #analytics-main section {
+    background: #1e1e1e;
+    border-color: #333;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode p,
+body.dark-mode label,
+body.dark-mode td,
+body.dark-mode th {
+    color: #f5f6fa;
+}
+
+body.dark-mode input[type="text"],
+body.dark-mode input[type="number"] {
+    background: #2d3436;
+    color: #f5f6fa;
+    border-color: #444;
+}
+
+body.dark-mode tr {
+    border-bottom: 1px solid #444;
+}
+
 body.dark-mode .sidebar {
     background: #111418;
     border-right: 1px solid #333;
+}
+
+body.dark-mode footer {
+    color: #636e72;
+}
+
+/* ─── Mobile Responsive */
+@media (max-width: 768px) {
+    body {
+        padding-left: 0;
+        padding-top: 60px; /* space for the mobile header */
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        flex-direction: row;
+        align-items: center;
+        padding: 0 15px;
+        z-index: 1000;
+        overflow-x: auto;
+        overflow-y: hidden;
+    }
+
+    .sidebar h2,
+    .sidebar > p {
+        display: none; /* hide the logo/subtitle on mobile */
+    }
+
+    .nav-links {
+        flex-direction: row;
+        gap: 0;
+        width: 100%;
+    }
+
+    .nav-links li a {
+        padding: 15px 12px;
+        font-size: 13px;
+        border-left: none;
+        border-bottom: 3px solid transparent;
+        white-space: nowrap;
+    }
+
+    .nav-links li a:hover,
+    .nav-links li a.active {
+        background: #2f3640;
+        border-left-color: transparent;
+        border-bottom-color: #2ecc71;
+    }
+
+    #dashboard {
+        grid-template-columns: 1fr;
+        padding: 15px;
+        gap: 15px;
+    }
+
+    #analytics-main {
+        padding: 15px;
+    }
+
+    .profile-header {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .profile-header > div:last-child {
+        margin-left: 0;
+        width: 100%;
+        justify-content: flex-start;
+    }
 }
