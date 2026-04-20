@@ -69,5 +69,13 @@
     </main>
 
     <script type="module" src="script.js"></script>
+</script>
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+    const app = initializeApp({ apiKey: "AIzaSyA2c9lMr-knuLL1r8CRW_MvtMM1hqSP6gU", authDomain: "fittrack-b0ee8.firebaseapp.com", projectId: "fittrack-b0ee8", storageBucket: "fittrack-b0ee8.firebasestorage.app", messagingSenderId: "968942652478", appId: "1:968942652478:web:fe4eb034783068966f956f" });
+    const auth = getAuth(app);
+    onAuthStateChanged(auth, (user) => { if (!user) window.location.href = 'login.html'; });
+</script>
 </body>
 </html>
