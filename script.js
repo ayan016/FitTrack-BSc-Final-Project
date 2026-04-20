@@ -22,7 +22,7 @@ if (localStorage.getItem('darkMode') === 'true') {
     document.body.classList.add('dark-mode');
 }
 
-//  Auth guard — redirect to login if not signed in 
+// ── Auth guard — redirect to login if not signed in ──────────────────────────
 let currentUserId = null;
 
 onAuthStateChanged(auth, (user) => {
@@ -35,7 +35,7 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
-//  Load user profile from Firestore 
+// ── Load user profile from Firestore ────────────────────────────────────────
 async function loadUserProfile(uid) {
     try {
         const docRef  = doc(db, 'users', uid);
@@ -81,7 +81,7 @@ async function loadUserProfile(uid) {
     }
 }
 
-//  Streak counter 
+// ── Streak counter ───────────────────────────────────────────────────────────
 function calculateStreak() {
     const history = JSON.parse(localStorage.getItem('weightHistory') || '[]');
     if (history.length === 0) return 0;
@@ -108,7 +108,7 @@ function updateStreakDisplay() {
 }
 updateStreakDisplay();
 
-//  BMI Calculator 
+// ── BMI Calculator ───────────────────────────────────────────────────────────
 const bmiBtn = document.getElementById('calc-bmi');
 if (bmiBtn) {
     bmiBtn.addEventListener('click', function () {
@@ -174,10 +174,14 @@ if (bmiBtn) {
             `<strong>💡 Smart Plan:</strong> ${smartAdvice}`;
 
         updateStreakDisplay();
+
+        // Show diet plan link after BMI calculated
+        const dietWrapper = document.getElementById("diet-link-wrapper");
+        if (dietWrapper) dietWrapper.style.display = "block";
     });
 }
 
-//  Budget Calculator 
+// ── Budget Calculator ────────────────────────────────────────────────────────
 const budgetBtn = document.getElementById('calc-budget');
 if (budgetBtn) {
     budgetBtn.addEventListener('click', function () {
@@ -210,7 +214,7 @@ if (budgetBtn) {
     });
 }
 
-//  Calorie Tracker 
+// ── Calorie Tracker ──────────────────────────────────────────────────────────
 const calsBtn = document.getElementById('calc-cals');
 if (calsBtn) {
     calsBtn.addEventListener('click', function () {
@@ -238,7 +242,7 @@ if (calsBtn) {
     });
 }
 
-//  Dark Mode On and Off
+// ── Dark Mode Toggle ─────────────────────────────────────────────────────────
 const darkBtn = document.getElementById('toggle-dark');
 if (darkBtn) {
     if (document.body.classList.contains('dark-mode')) {
@@ -264,7 +268,7 @@ if (darkBtn) {
     });
 }
 
-// For Sign Out 
+// ── Sign Out ─────────────────────────────────────────────────────────────────
 const signOutBtn = document.getElementById('sign-out');
 if (signOutBtn) {
     signOutBtn.addEventListener('click', async function () {
@@ -280,7 +284,7 @@ if (signOutBtn) {
     });
 }
 
-// to Save Settings to Firestore 
+// ── Save Settings to Firestore ───────────────────────────────────────────────
 const saveButton = document.getElementById('save-settings');
 if (saveButton) {
     saveButton.addEventListener('click', async function (e) {
@@ -328,7 +332,7 @@ if (saveButton) {
     });
 }
 
-//  Clear All Local Data 
+// ── Clear All Local Data ─────────────────────────────────────────────────────
 const clearBtn = document.getElementById('clear-data');
 if (clearBtn) {
     clearBtn.addEventListener('click', function () {
@@ -343,3 +347,4 @@ if (clearBtn) {
         }
     });
 }
+
