@@ -22,7 +22,52 @@ if (localStorage.getItem('darkMode') === 'true') {
     document.body.classList.add('dark-mode');
 }
 
-// ── Auth guard — redirect to login if not signed in ──────────────────────────
+
+//  Daily Motivational Quotes
+const quotes = [
+    { text: 'Take care of your body. It is the only place you have to live.', author: '— Jim Rohn' },
+    { text: 'The groundwork for all happiness is good health.', author: '— Leigh Hunt' },
+    { text: 'It is never too late to become what you might have been.', author: '— George Eliot' },
+    { text: 'Small steps every day lead to big results over time.', author: '— Unknown' },
+    { text: 'Your body can stand almost anything. It is your mind you have to convince.', author: '— Unknown' },
+    { text: 'Motivation is what gets you started. Habit is what keeps you going.', author: '— Jim Ryun' },
+    { text: 'The only bad workout is the one that did not happen.', author: '— Unknown' },
+    { text: 'Strive for progress, not perfection.', author: '— Unknown' },
+    { text: 'Success usually comes to those who are too busy to be looking for it.', author: '— Henry David Thoreau' },
+    { text: 'Believe in yourself and all that you are capable of achieving.', author: '— Unknown' },
+    { text: 'Health is not valued until sickness comes.', author: '— Thomas Fuller' },
+    { text: 'To keep the body in good health is a duty, otherwise we shall not be able to keep our mind strong and clear.', author: '— Buddha' },
+    { text: 'A healthy outside starts from the inside.', author: '— Robert Urich' },
+    { text: 'The first wealth is health.', author: '— Ralph Waldo Emerson' },
+    { text: 'You do not have to be great to start, but you have to start to be great.', author: '— Zig Ziglar' },
+    { text: 'Physical fitness is not only one of the most important keys to a healthy body, it is the basis of dynamic and creative intellectual activity.', author: '— John F. Kennedy' },
+    { text: 'The secret of getting ahead is getting started.', author: '— Mark Twain' },
+    { text: 'Do something today that your future self will thank you for.', author: '— Unknown' },
+    { text: 'Every day is a new beginning. Take a deep breath, smile, and start again.', author: '— Unknown' },
+    { text: 'It does not matter how slowly you go as long as you do not stop.', author: '— Confucius' },
+    { text: 'Strength does not come from physical capacity. It comes from an indomitable will.', author: '— Mahatma Gandhi' },
+    { text: 'Your health is an investment, not an expense.', author: '— Unknown' },
+    { text: 'The difference between who you are and who you want to be is what you do.', author: '— Unknown' },
+    { text: 'Push yourself because no one else is going to do it for you.', author: '— Unknown' },
+    { text: 'You are one workout away from a good mood.', author: '— Unknown' },
+    { text: 'Wake up with determination. Go to bed with satisfaction.', author: '— Unknown' },
+    { text: 'Dream it. Wish it. Do it.', author: '— Unknown' },
+    { text: 'No pain, no gain. Shut up and train.', author: '— Unknown' },
+    { text: 'Work hard in silence. Let your success be your noise.', author: '— Frank Ocean' },
+    { text: 'Be stronger than your strongest excuse.', author: '— Unknown' }
+];
+
+const quoteEl  = document.getElementById('daily-quote');
+const authorEl = document.getElementById('quote-author');
+if (quoteEl && authorEl) {
+    // Pick quote based on day of year so it changes daily but stays same all day
+    const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
+    const todayQuote = quotes[dayOfYear % quotes.length];
+    quoteEl.innerText  = todayQuote.text;
+    authorEl.innerText = todayQuote.author;
+}
+
+//  Auth guard — redirect to login if not signed in 
 let currentUserId = null;
 
 onAuthStateChanged(auth, (user) => {
@@ -35,7 +80,7 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
-// ── Load user profile from Firestore ────────────────────────────────────────
+// to Load user profile from Firestore 
 async function loadUserProfile(uid) {
     try {
         const docRef  = doc(db, 'users', uid);
@@ -81,7 +126,7 @@ async function loadUserProfile(uid) {
     }
 }
 
-// ── Streak counter ───────────────────────────────────────────────────────────
+//  Streak counter 
 function calculateStreak() {
     const history = JSON.parse(localStorage.getItem('weightHistory') || '[]');
     if (history.length === 0) return 0;
@@ -108,7 +153,7 @@ function updateStreakDisplay() {
 }
 updateStreakDisplay();
 
-// ── BMI Calculator ───────────────────────────────────────────────────────────
+//  BMI Calculator 
 const bmiBtn = document.getElementById('calc-bmi');
 if (bmiBtn) {
     bmiBtn.addEventListener('click', function () {
@@ -167,6 +212,7 @@ if (bmiBtn) {
         localStorage.setItem('currentWeight', weight);
         localStorage.setItem('currentBMI',    bmi);
         localStorage.setItem('bmiCategory',   category);
+        localStorage.setItem('heightCm',      heightCm);
 
         resultEl.innerHTML =
             `<strong>Your BMI:</strong> <span style="color:${color}; font-size:20px;">${bmi}</span> ` +
@@ -181,7 +227,7 @@ if (bmiBtn) {
     });
 }
 
-// ── Budget Calculator ────────────────────────────────────────────────────────
+//  Budget Calculator 
 const budgetBtn = document.getElementById('calc-budget');
 if (budgetBtn) {
     budgetBtn.addEventListener('click', function () {
@@ -214,7 +260,7 @@ if (budgetBtn) {
     });
 }
 
-// ── Calorie Tracker ──────────────────────────────────────────────────────────
+//  Calorie Tracker 
 const calsBtn = document.getElementById('calc-cals');
 if (calsBtn) {
     calsBtn.addEventListener('click', function () {
@@ -242,7 +288,7 @@ if (calsBtn) {
     });
 }
 
-// ── Dark Mode Toggle ─────────────────────────────────────────────────────────
+//  Dark Mode Onn logic
 const darkBtn = document.getElementById('toggle-dark');
 if (darkBtn) {
     if (document.body.classList.contains('dark-mode')) {
@@ -268,7 +314,7 @@ if (darkBtn) {
     });
 }
 
-// ── Sign Out ─────────────────────────────────────────────────────────────────
+// For Sign Out 
 const signOutBtn = document.getElementById('sign-out');
 if (signOutBtn) {
     signOutBtn.addEventListener('click', async function () {
@@ -284,7 +330,7 @@ if (signOutBtn) {
     });
 }
 
-// ── Save Settings to Firestore ───────────────────────────────────────────────
+// too  Save Settings to Firestore 
 const saveButton = document.getElementById('save-settings');
 if (saveButton) {
     saveButton.addEventListener('click', async function (e) {
@@ -332,7 +378,7 @@ if (saveButton) {
     });
 }
 
-// ── Clear All Local Data ─────────────────────────────────────────────────────
+//  Clear All Local Data 
 const clearBtn = document.getElementById('clear-data');
 if (clearBtn) {
     clearBtn.addEventListener('click', function () {
