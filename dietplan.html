@@ -266,4 +266,279 @@
         // Dark mode
         if (localStorage.getItem('darkMode') === 'true') document.body.classList.add('dark-mode');
 
- 
+
+        // ── All diet plan data ────────────────────────────────────────────────
+        const allPlans = {
+
+            underweight: [
+                {
+                    name: "High Calorie Gain Plan",
+                    emoji: "🍳",
+                    tagline: "Build mass with calorie-dense whole foods",
+                    calories: "~2,500 kcal/day",
+                    breakfast: ["2 eggs fried in butter with 2 rotis", "1 glass full-fat milk with 2 tsp honey", "1 banana"],
+                    lunch:     ["1 cup white rice with chicken karahi (150g chicken)", "1 cup daal with ghee tarka", "1 roti"],
+                    dinner:    ["Beef keema (100g) with 2 rotis", "1 cup sabzi cooked in oil", "1 glass lassi (full fat)"]
+                },
+                {
+                    name: "Protein & Carb Builder",
+                    emoji: "💪",
+                    tagline: "Lean muscle gain with balanced macros",
+                    calories: "~2,300 kcal/day",
+                    breakfast: ["Oat porridge with full-fat milk, banana, and nuts", "2 boiled eggs", "1 glass orange juice"],
+                    lunch:     ["Grilled chicken breast (150g) with 1.5 cups rice", "Mixed vegetable salad with olive oil", "1 roti"],
+                    dinner:    ["Lentil soup (daal) with 2 rotis and butter", "1 cup chickpea curry", "1 cup yoghurt"]
+                },
+                {
+                    name: "Pakistani Bulk Plan",
+                    emoji: "🍛",
+                    tagline: "Traditional meals optimised for weight gain",
+                    calories: "~2,600 kcal/day",
+                    breakfast: ["Paratha (2) with butter and egg omelette", "1 cup halwa or kheer", "1 glass full-fat milk"],
+                    lunch:     ["Mutton shorba with 2 cups rice", "1 cup raita", "1 roti with ghee"],
+                    dinner:    ["Chicken biryani (large portion)", "1 cup dahi (yoghurt)", "Fruit chaat for dessert"]
+                }
+            ],
+
+            normal: [
+                {
+                    name: "Clean Maintenance Plan",
+                    emoji: "🥗",
+                    tagline: "Stay healthy and maintain your ideal weight",
+                    calories: "~1,800 kcal/day",
+                    breakfast: ["Oat bowl with low-fat milk, apple slices, and honey", "2 boiled eggs", "Green tea"],
+                    lunch:     ["Grilled chicken (120g) with 1 cup brown rice", "Garden salad with lemon dressing", "1 roti"],
+                    dinner:    ["Daal (lentils) with 1 roti", "Stir-fried vegetables", "1 cup low-fat yoghurt"]
+                },
+                {
+                    name: "Balanced Pakistani Plan",
+                    emoji: "🍽️",
+                    tagline: "Traditional food kept clean and balanced",
+                    calories: "~1,900 kcal/day",
+                    breakfast: ["2 rotis with omelette and mint chutney", "1 glass lassi (low fat)", "1 fruit"],
+                    lunch:     ["Chicken karahi (medium portion, 100g chicken) with 1 roti", "Cucumber and tomato salad", "1 cup daal"],
+                    dinner:    ["Boiled or baked fish (120g) with 1 roti", "Sauteed spinach (palak)", "1 cup yoghurt"]
+                },
+                {
+                    name: "Active Lifestyle Plan",
+                    emoji: "🏃",
+                    tagline: "For students who exercise regularly",
+                    calories: "~2,100 kcal/day",
+                    breakfast: ["Banana oat pancakes (2 eggs, oats, banana)", "Peanut butter on 1 roti", "1 glass milk"],
+                    lunch:     ["Tuna wrap with roti, yoghurt, lettuce, and tomato", "1 apple or orange", "Water"],
+                    dinner:    ["Grilled chicken (130g) with sweet potato or rice", "Steamed broccoli or mixed veggies", "1 cup dahi"]
+                }
+            ],
+
+            overweight: [
+                {
+                    name: "Low Carb Plan",
+                    emoji: "🥩",
+                    tagline: "Cut carbs and burn stored fat",
+                    calories: "~1,400 kcal/day",
+                    breakfast: ["3 egg omelette with spinach and tomato (no roti)", "1 cup green tea or black coffee", "1 small apple"],
+                    lunch:     ["Grilled chicken breast (150g) with large salad", "Cucumber, tomato, lettuce with lemon dressing", "No rice or roti"],
+                    dinner:    ["Baked or boiled fish (130g)", "Sauteed vegetables in olive oil", "1 cup low-fat yoghurt"]
+                },
+                {
+                    name: "High Protein Plan",
+                    emoji: "💪",
+                    tagline: "Stay full longer and preserve muscle",
+                    calories: "~1,500 kcal/day",
+                    breakfast: ["2 boiled eggs with 1 roti (whole wheat)", "1 cup low-fat milk or lassi", "1 banana"],
+                    lunch:     ["Chicken breast (150g) with 1 small cup brown rice", "Daal (half cup, light tarka)", "Salad"],
+                    dinner:    ["Grilled chicken or fish (120g)", "1 roti (whole wheat)", "Sabzi cooked with minimal oil"]
+                },
+                {
+                    name: "Calorie Deficit Plan",
+                    emoji: "📉",
+                    tagline: "Steady and sustainable weight loss",
+                    calories: "~1,350 kcal/day",
+                    breakfast: ["Oat porridge with water and cinnamon", "1 boiled egg", "Green tea"],
+                    lunch:     ["Lentil soup (daal, light) with 1 roti", "Mixed salad (no dressing)", "1 small fruit"],
+                    dinner:    ["Vegetable stir-fry with 100g boiled chicken", "1 roti (small, whole wheat)", "1 cup plain yoghurt (low fat)"]
+                }
+            ],
+
+            obese: [
+                {
+                    name: "Doctor Recommended Plan",
+                    emoji: "🏥",
+                    tagline: "Safe and gradual — consult your doctor too",
+                    calories: "~1,200 kcal/day",
+                    breakfast: ["2 egg whites scrambled (no yolk)", "1 small whole wheat roti", "Green tea, no sugar"],
+                    lunch:     ["Boiled chicken breast (100g) with steamed vegetables", "Clear lentil soup (no tarka)", "Water or lemon water"],
+                    dinner:    ["Grilled fish (100g)", "Steamed spinach or other leafy greens", "1 cup plain low-fat yoghurt"]
+                },
+                {
+                    name: "Low Calorie Pakistani Plan",
+                    emoji: "🍲",
+                    tagline: "Traditional meals with reduced portions",
+                    calories: "~1,300 kcal/day",
+                    breakfast: ["1 roti with one boiled egg", "1 cup low-fat dahi", "Green tea"],
+                    lunch:     ["Daal (small portion, light tarka) with 1 small roti", "Salad with lemon and salt", "1 small fruit (apple or guava)"],
+                    dinner:    ["Sabzi (vegetables) cooked with minimal oil", "1 small roti", "1 cup low-fat yoghurt"]
+                },
+                {
+                    name: "Clean Eating Reset",
+                    emoji: "🥦",
+                    tagline: "Cut processed food and reset your diet",
+                    calories: "~1,250 kcal/day",
+                    breakfast: ["Vegetable omelette (2 eggs, tomato, spinach, no oil — non-stick pan)", "Green tea, no sugar", "1 orange"],
+                    lunch:     ["Large salad with boiled chicken (100g), cucumber, tomato, lemon", "1 small whole wheat roti", "Water"],
+                    dinner:    ["Boiled or steamed fish (100g)", "Steamed or boiled vegetables", "Clear soup or plain yoghurt"]
+                }
+            ]
+        };
+
+        // ── Read BMI from localStorage ────────────────────────────────────────
+        const savedBMI      = parseFloat(localStorage.getItem('currentBMI'));
+        const savedCategory = localStorage.getItem('bmiCategory');
+        const savedPlan     = localStorage.getItem('selectedDietPlan');
+
+        let activeCategory = null;
+
+        // Map category string to key
+        function categoryToKey(cat) {
+            if (!cat) return null;
+            const c = cat.toLowerCase();
+            if (c.includes('underweight')) return 'underweight';
+            if (c.includes('normal'))      return 'normal';
+            if (c.includes('overweight'))  return 'overweight';
+            if (c.includes('obese'))       return 'obese';
+            return null;
+        }
+
+        // ── Show BMI badge if available ───────────────────────────────────────
+        if (savedBMI && savedCategory) {
+            const badge    = document.getElementById('bmi-badge');
+            const catKey   = categoryToKey(savedCategory);
+            const colors   = { underweight: '#3498db', normal: '#2ecc71', overweight: '#f39c12', obese: '#e74c3c' };
+            badge.style.display     = 'inline-flex';
+            badge.style.borderColor = colors[catKey] || '#2ecc71';
+            document.getElementById('badge-bmi-num').innerText    = savedBMI;
+            document.getElementById('badge-bmi-num').style.color  = colors[catKey] || '#2ecc71';
+            document.getElementById('badge-bmi-cat').innerText    = savedCategory;
+            document.getElementById('badge-bmi-cat').style.color  = colors[catKey] || '#2ecc71';
+        }
+
+        // ── Show saved plan banner if a plan was previously selected ──────────
+        if (savedPlan) {
+            const parsed = JSON.parse(savedPlan);
+            const banner = document.getElementById('saved-banner');
+            banner.classList.add('show');
+            document.getElementById('saved-text').innerText =
+                `Your saved plan: "${parsed.name}" (${parsed.category})`;
+        }
+
+        // ── Render plan cards ─────────────────────────────────────────────────
+        function renderPlans(categoryKey) {
+            activeCategory = categoryKey;
+            const plans  = allPlans[categoryKey];
+            const grid   = document.getElementById('plans-grid');
+            const saved  = savedPlan ? JSON.parse(savedPlan) : null;
+            grid.innerHTML = '';
+
+            plans.forEach((plan, idx) => {
+                const isSelected = saved && saved.name === plan.name && saved.category === categoryKey;
+
+                const card = document.createElement('div');
+                card.className = 'plan-card' + (isSelected ? ' selected' : '');
+                card.innerHTML = `
+                    <div class="plan-header">
+                        <span class="plan-emoji">${plan.emoji}</span>
+                        <div>
+                            <p class="plan-name">${plan.name}</p>
+                            <p class="plan-tagline">${plan.tagline}</p>
+                        </div>
+                    </div>
+                    <div class="plan-body">
+                        <div class="meal-block">
+                            <div class="meal-label">🌅 Breakfast</div>
+                            ${plan.breakfast.map(item => `<div class="meal-item"><span class="dot"></span><span>${item}</span></div>`).join('')}
+                        </div>
+                        <div class="meal-block">
+                            <div class="meal-label">☀️ Lunch</div>
+                            ${plan.lunch.map(item => `<div class="meal-item"><span class="dot"></span><span>${item}</span></div>`).join('')}
+                        </div>
+                        <div class="meal-block">
+                            <div class="meal-label">🌙 Dinner</div>
+                            ${plan.dinner.map(item => `<div class="meal-item"><span class="dot"></span><span>${item}</span></div>`).join('')}
+                        </div>
+                    </div>
+                    <div class="plan-footer">
+                        <span class="calorie-tag">🔥 ${plan.calories}</span>
+                        <button class="select-btn ${isSelected ? 'selected-btn' : ''}" data-idx="${idx}">
+                            ${isSelected ? '✓ Selected' : 'Select Plan'}
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+
+            // Select button logic
+            grid.querySelectorAll('.select-btn').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const idx  = parseInt(this.getAttribute('data-idx'));
+                    const plan = allPlans[activeCategory][idx];
+
+                    // Save to localStorage
+                    localStorage.setItem('selectedDietPlan', JSON.stringify({
+                        name: plan.name,
+                        category: activeCategory,
+                        emoji: plan.emoji
+                    }));
+
+                    // Update all buttons
+                    grid.querySelectorAll('.select-btn').forEach(b => {
+                        b.innerText = 'Select Plan';
+                        b.classList.remove('selected-btn');
+                    });
+                    grid.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected'));
+
+                    this.innerText = '✓ Selected';
+                    this.classList.add('selected-btn');
+                    this.closest('.plan-card').classList.add('selected');
+
+                    // Show banner
+                    const banner = document.getElementById('saved-banner');
+                    banner.classList.add('show');
+                    document.getElementById('saved-text').innerText =
+                        `Your saved plan: "${plan.name}" (${activeCategory})`;
+                });
+            });
+        }
+
+        // ── Switch category tab ───────────────────────────────────────────────
+        window.showCategory = function(key) {
+            // Clear all active tab classes
+            ['underweight','normal','overweight','obese'].forEach(k => {
+                const tab = document.getElementById('tab-' + k);
+                tab.className = 'cat-tab';
+            });
+
+            // Set active class
+            document.getElementById('tab-' + key).classList.add('cat-tab', 'active-' + key);
+            renderPlans(key);
+        };
+
+        // ── On page load: auto-select BMI category or default to normal ───────
+        const autoKey = categoryToKey(savedCategory);
+        if (autoKey) {
+            showCategory(autoKey);
+        } else {
+            showCategory('normal');
+        }
+    </script>
+
+    <!-- Auth guard -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+        const app = initializeApp({ apiKey: "AIzaSyA2c9lMr-knuLL1r8CRW_MvtMM1hqSP6gU", authDomain: "fittrack-b0ee8.firebaseapp.com", projectId: "fittrack-b0ee8", storageBucket: "fittrack-b0ee8.firebasestorage.app", messagingSenderId: "968942652478", appId: "1:968942652478:web:fe4eb034783068966f956f" });
+        const auth = getAuth(app);
+        onAuthStateChanged(auth, (user) => { if (!user) window.location.href = 'login.html'; });
+    </script>
+
+</body>
+</html>

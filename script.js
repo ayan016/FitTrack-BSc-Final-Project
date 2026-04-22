@@ -67,7 +67,7 @@ if (quoteEl && authorEl) {
     authorEl.innerText = todayQuote.author;
 }
 
-//  Auth guard — redirect to login if not signed in 
+//  Auth guard 
 let currentUserId = null;
 
 onAuthStateChanged(auth, (user) => {
